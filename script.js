@@ -61,7 +61,7 @@ startVoice();
 
 // ABOUT TYPING ANIMATION
 
-const text="Computer Science student passionate about Artificial Intelligence, Machine Learning and building innovative systems that solve real world problems.";
+const text="Computer Science student passionate about Artificial Intelligence,Machine Learning and building intelligent systems that solve real-worldproblems. I enjoy creating innovative technologies and impactful solutions.";
 
 let i=0;
 
