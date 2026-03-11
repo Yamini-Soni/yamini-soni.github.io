@@ -118,7 +118,7 @@ padding-right:10px;
 }
 
 .project-card{
-background:rgb(77, 156, 231);
+background:rgb(126, 182, 235);
 padding:20px;
 border-radius:12px;
 box-shadow:0 8px 20px rgba(0,0,0,0.1);
@@ -141,9 +141,9 @@ color:transparent;
 }
 
 .about-text{
-box-shadow:0 8px 20px rgba(0,0,0,0.1);
+box-shadow:0 8px 20px rgba(0,0,0,0.3);
 transition:0.3s;
-border-top:4px solid #4a6cf7;
+border-top:4px solid #8098f7;
 font-size:20px;
 line-height:1.7;
 margin-top:20px;
