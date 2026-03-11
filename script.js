@@ -18,7 +18,7 @@ let voiceActive=false;
 
 function startVoice(){
 
-recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition=new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
 recognition.continuous=true;
 recognition.lang="en-US";
@@ -32,22 +32,20 @@ recognition.onresult=function(event){
 let command=event.results[event.results.length-1][0].transcript.toLowerCase();
 
 if(command.includes("home")) showSection("home");
-else if(command.includes("about")) showSection("about");
-else if(command.includes("skills")) showSection("skills");
-else if(command.includes("projects")) showSection("projects");
-else if(command.includes("contact")) showSection("contact");
+if(command.includes("about")) showSection("about");
+if(command.includes("skills")) showSection("skills");
+if(command.includes("projects")) showSection("projects");
+if(command.includes("contact")) showSection("contact");
 
 };
 
 }
 
 function stopVoice(){
-
 if(recognition){
 recognition.stop();
 voiceActive=false;
 }
-
 }
 
 function toggleVoice(){
@@ -61,7 +59,30 @@ startVoice();
 }
 
 
-// AI NETWORK ANIMATION
+// ABOUT TYPING ANIMATION
+
+const text="Computer Science student passionate about Artificial Intelligence, Machine Learning and building innovative systems that solve real world problems.";
+
+let i=0;
+
+function typeWriter(){
+
+if(i<text.length){
+
+document.getElementById("typing").innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(typeWriter,30);
+
+}
+
+}
+
+typeWriter();
+
+
+// AI NETWORK BACKGROUND
 
 const canvas=document.getElementById("ai-network");
 const ctx=canvas.getContext("2d");
@@ -74,12 +95,10 @@ let nodes=[];
 for(let i=0;i<50;i++){
 
 nodes.push({
-
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 vx:(Math.random()-0.5)*1,
 vy:(Math.random()-0.5)*1
-
 });
 
 }
