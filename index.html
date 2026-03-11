@@ -1,71 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
-<title>My Portfolio</title>
+<title>Yamini Soni | Portfolio</title>
 <link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 
 <body>
 
 <header>
-<h1>Hi, I'm Y S</h1>
-<p>BTech CSE | AI & ML Enthusiast</p>
-<button onclick="startVoice()">🎤 Voice Navigation</button>
-</header>
+
+<div class="logo">
+<h2>Yamini</h2>
+</div>
 
 <nav>
-<a href="#about">About</a>
-<a href="#skills">Skills</a>
-<a href="#projects">Projects</a>
-<a href="#contact">Contact</a>
+<ul>
+<li onclick="showSection('home')">Home</li>
+<li onclick="showSection('about')">About</li>
+<li onclick="showSection('skills')">Skills</li>
+<li onclick="showSection('projects')">Projects</li>
+<li onclick="showSection('contact')">Contact</li>
+</ul>
 </nav>
 
-<section id="about">
-<h2>About Me</h2>
-<p>
-I am a Computer Science student interested in Artificial Intelligence,
-Machine Learning and innovative systems. My goal is to build technology
-that helps people and improves real world systems.
+<div class="voice-controls">
+<button onclick="startVoice()">🎤 Voice</button>
+<button onclick="stopVoice()">⛔ Stop</button>
+</div>
+
+</header>
+
+
+<main>
+
+<!-- HOME -->
+
+<section id="home" class="section active">
+
+<div class="home-box">
+
+<img src="images/profile.jpg" class="profile">
+
+<h1>Yamini Soni</h1>
+
+<p class="tag">
+AI • ML • NLP Enthusiast
 </p>
+
+<div class="social">
+
+<a href="https://github.com/Yamini-Soni" target="_blank">
+<i class="fab fa-github"></i>
+</a>
+
+<a href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank">
+<i class="fab fa-linkedin"></i>
+</a>
+
+</div>
+
+</div>
+
 </section>
 
-<section id="skills">
+
+<!-- ABOUT -->
+
+<section id="about" class="section">
+
+<h2>About Me</h2>
+
+<p class="text">
+
+Computer Science student passionate about Artificial Intelligence,
+Machine Learning and building intelligent systems that solve real-world
+problems. I enjoy designing innovative technology and creating impactful
+solutions.
+
+</p>
+
+</section>
+
+
+<!-- SKILLS -->
+
+<section id="skills" class="section">
+
 <h2>Skills</h2>
-<ul>
-<li>Python</li>
-<li>C++</li>
-<li>Machine Learning</li>
-<li>NLP</li>
-<li>Deep Learning</li>
-</ul>
+
+<div class="skill-grid">
+
+<div class="card">Python</div>
+<div class="card">C++</div>
+<div class="card">Machine Learning</div>
+<div class="card">Deep Learning</div>
+<div class="card">Natural Language Processing</div>
+<div class="card">Web Development</div>
+
+</div>
+
 </section>
 
-<section id="projects">
+
+<!-- PROJECTS -->
+
+<section id="projects" class="section">
+
 <h2>Projects</h2>
 
-<div class="project">
+<div class="project-grid">
+
+<div class="project-card">
 <h3>Flying Microphone</h3>
-<p>Drone-like microphone system that flies to a person who raises a hand.</p>
+<p>Smart drone microphone that flies to the person raising their hand.</p>
 </div>
 
-<div class="project">
+<div class="project-card">
 <h3>NLP Chatbot</h3>
-<p>Chatbot using Natural Language Processing.</p>
+<p>Chatbot capable of understanding natural language queries.</p>
 </div>
 
-<div class="project">
+<div class="project-card">
 <h3>Automation Bot</h3>
 <p>Automation Anywhere bot to automate repetitive tasks.</p>
 </div>
 
+</div>
+
 </section>
 
-<section id="contact">
+
+<!-- CONTACT -->
+
+<section id="contact" class="section">
+
 <h2>Contact</h2>
+
 <p>Email: yourmail@gmail.com</p>
-<p>GitHub: github.com/yourusername</p>
+
+<div class="social">
+
+<a href="https://github.com/Yamini-Soni" target="_blank">
+<i class="fab fa-github"></i>
+</a>
+
+<a href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank">
+<i class="fab fa-linkedin"></i>
+</a>
+
+</div>
+
 </section>
+
+</main>
 
 <script src="script.js"></script>
 
