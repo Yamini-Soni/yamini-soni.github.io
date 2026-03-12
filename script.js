@@ -1,457 +1,426 @@
-// ===== CUSTOM CURSOR =====
-const cursorDot = document.querySelector('.cursor-dot');
-const cursorRing = document.querySelector('.cursor-ring');
+/* ══════════════════════════════════════
+   YAMINI SONI — PORTFOLIO SCRIPT
+   Clean, structured, voice-powered
+══════════════════════════════════════ */
 
-document.addEventListener('mousemove', (e) => {
-  cursorDot.style.left = e.clientX + 'px';
-  cursorDot.style.top = e.clientY + 'px';
-  cursorRing.style.left = e.clientX + 'px';
-  cursorRing.style.top = e.clientY + 'px';
+// ── CURSOR ──────────────────────────────
+const dot  = document.querySelector('.cursor-dot');
+const ring = document.querySelector('.cursor-ring');
 
-  // Bot eye tracking on bot page
+document.addEventListener('mousemove', e => {
+  dot.style.left  = e.clientX + 'px';
+  dot.style.top   = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px';
+  ring.style.top  = e.clientY + 'px';
   if (document.getElementById('page-bot').classList.contains('active')) {
-    movePupils(e.clientX, e.clientY);
+    trackEyes(e.clientX, e.clientY);
   }
 });
 
-document.querySelectorAll('a, button, .orbit-item, .project-card-new, .achieve-card, .meet-bot-cta').forEach(el => {
-  el.addEventListener('mouseenter', () => cursorRing.classList.add('hovering'));
-  el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
+document.querySelectorAll('a, button, .proj-card, .topic-btn, .ach-card, .edu-card-new, .cert-card-new').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('grow'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('grow'));
 });
 
-// ===== PARTICLES BACKGROUND =====
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+// ── CANVAS BG (warm cream particles) ────
+const canvas = document.getElementById('bg-canvas');
+const ctx    = canvas.getContext('2d');
 
-const particles = [];
-for (let i = 0; i < 60; i++) {
-  particles.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 0.4,
-    vy: (Math.random() - 0.5) * 0.4,
-    r: Math.random() * 2 + 0.5,
-    alpha: Math.random() * 0.4 + 0.1
-  });
-}
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
 
-function drawParticles() {
+const pts = Array.from({ length: 48 }, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  vx: (Math.random() - 0.5) * 0.35,
+  vy: (Math.random() - 0.5) * 0.35,
+  r: Math.random() * 2.2 + 0.6,
+}));
+
+function drawBg() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
     if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,140,50,${p.alpha})`;
+    ctx.fillStyle = 'rgba(232,132,90,0.18)';
     ctx.fill();
-
-    particles.forEach(other => {
-      const d = Math.hypot(p.x - other.x, p.y - other.y);
-      if (d < 100) {
+    pts.forEach(q => {
+      const d = Math.hypot(p.x - q.x, p.y - q.y);
+      if (d < 110) {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
-        ctx.lineTo(other.x, other.y);
-        ctx.strokeStyle = `rgba(255,140,50,${0.05 * (1 - d / 100)})`;
-        ctx.lineWidth = 0.5;
+        ctx.lineTo(q.x, q.y);
+        ctx.strokeStyle = `rgba(212,168,75,${0.04 * (1 - d / 110)})`;
+        ctx.lineWidth = 0.8;
         ctx.stroke();
       }
     });
   });
-  requestAnimationFrame(drawParticles);
+  requestAnimationFrame(drawBg);
 }
-drawParticles();
+drawBg();
 
-// ===== PAGE NAVIGATION =====
+
+// ── NAVIGATION ──────────────────────────
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const page = document.getElementById('page-' + id);
-  if (page) page.classList.add('active');
+  if (page) {
+    page.classList.add('active');
+    if (id !== 'home' && id !== 'bot') animateSkillBars();
+  }
 }
 
-function goHome() { showPage('home'); }
+function goHome()   { showPage('home'); }
 
 function goToBot() {
   showPage('bot');
-  setTimeout(() => {
-    botSpeak("Hi there! I'm Yami, Yamini's AI assistant. Click any topic around me or tell me what you want to explore — skills, projects, achievements, and more!");
-  }, 400);
+  setTimeout(() => botSpeak("Hi there! I'm Yami. I can walk you through Yamini's work, skills, and background. What would you like to explore?"), 350);
 }
 
 function backToBot() {
   showPage('bot');
-  setTimeout(() => {
-    const msgs = [
-      "Welcome back! What else would you like to know about Yamini?",
-      "I'm here! Ask me about any section or click on the topics.",
-      "Back to home base! Where would you like to explore next?"
-    ];
-    botSpeak(msgs[Math.floor(Math.random() * msgs.length)]);
-  }, 300);
+  const replies = [
+    "Back here! What would you like to explore next?",
+    "I'm here. Click a topic or just ask me anything about Yamini!",
+    "Welcome back! What else can I help you with?"
+  ];
+  setTimeout(() => botSpeak(replies[Math.floor(Math.random() * replies.length)]), 300);
 }
 
 function navigateTo(section) {
-  // Highlight orbit item
-  document.querySelectorAll('.orbit-item').forEach(el => el.classList.remove('active-orbit'));
-  const item = document.querySelector(`[data-section="${section}"]`);
-  if (item) item.classList.add('active-orbit');
-
-  const botMessages = {
-    skills: "Let me show you Yamini's technical skills — Python, ML, deep learning, and more!",
-    projects: "Here are Yamini's key projects. Click any card to get the full story!",
-    experience: "Yamini trained at AlgoTutor on cutting-edge Generative AI and NLP!",
-    achievements: "Yamini's been recognized by Google for AI safety work. Let me show you!",
-    education: "Yamini is studying CSE at LPU with an impressive 8.71 CGPA!",
-    certificates: "Here are Yamini's verified certifications from Google and ITMO University!",
-    contact: "Want to connect with Yamini? All her contact details are right here!",
-    resume: "Download Yamini's full resume here!"
+  const intro = {
+    skills:       "Here are Yamini's technical skills across languages, ML, and tools!",
+    projects:     "These are Yamini's key AI and ML projects. Click any card for the full story!",
+    experience:   "Yamini completed an intensive NLP and GenAI training program. Let me show you!",
+    achievements: "Yamini has been recognized by Google for her AI safety contributions!",
+    education:    "Yamini is pursuing her B.Tech in CSE at LPU. Here's her academic background!",
+    certificates: "Here are Yamini's verified certifications from Google, ITMO, and more!",
+    resume:       "Here's an overview of Yamini's full resume!",
+    contact:      "Yamini is open to internships and collaborations. Here's how to reach her!"
   };
-
-  botSpeak(botMessages[section] || "Here you go!");
-  setTimeout(() => showPage(section), 500);
+  botSpeak(intro[section] || "Here you go!");
+  setTimeout(() => showPage(section), 480);
 }
 
-// ===== BOT EYE TRACKING =====
-function movePupils(mouseX, mouseY) {
-  const eyes = [
-    { eye: document.getElementById('eyeLeft'), pupil: document.getElementById('pupilLeft') },
-    { eye: document.getElementById('eyeRight'), pupil: document.getElementById('pupilRight') }
-  ];
 
-  eyes.forEach(({ eye, pupil }) => {
+// ── BOT EYE TRACKING ────────────────────
+function trackEyes(mx, my) {
+  [['eyeLeft','pupilLeft'], ['eyeRight','pupilRight']].forEach(([eid, pid]) => {
+    const eye   = document.getElementById(eid);
+    const pupil = document.getElementById(pid);
     if (!eye || !pupil) return;
-    const eyeRect = eye.getBoundingClientRect();
-    const eyeCX = eyeRect.left + eyeRect.width / 2;
-    const eyeCY = eyeRect.top + eyeRect.height / 2;
-    const dx = mouseX - eyeCX;
-    const dy = mouseY - eyeCY;
+    const r   = eye.getBoundingClientRect();
+    const cx  = r.left + r.width / 2;
+    const cy  = r.top  + r.height / 2;
+    const dx  = mx - cx, dy = my - cy;
     const dist = Math.sqrt(dx * dx + dy * dy);
-    const maxDist = 7;
-    const nx = dist > 0 ? dx / dist : 0;
-    const ny = dist > 0 ? dy / dist : 0;
-    const move = Math.min(dist / 20, maxDist);
+    const max  = 6;
+    const nx   = dist > 0 ? dx / dist : 0;
+    const ny   = dist > 0 ? dy / dist : 0;
+    const move = Math.min(dist / 18, max);
     pupil.style.transform = `translate(calc(-50% + ${nx * move}px), calc(-50% + ${ny * move}px))`;
   });
 }
 
-// ===== BOT SPEECH =====
-let synth = window.speechSynthesis;
-let isTalking = false;
 
-function botSpeak(text, callback) {
-  // Update bubble text
-  const botTextEl = document.getElementById('botText');
-  if (botTextEl) {
-    botTextEl.style.opacity = 0;
-    setTimeout(() => {
-      botTextEl.textContent = text;
-      botTextEl.style.opacity = 1;
-    }, 200);
+// ── BOT SPEECH ──────────────────────────
+const synth = window.speechSynthesis;
+let speaking = false;
+
+function botSpeak(text, cb) {
+  // Update bubble
+  const el = document.getElementById('botText');
+  if (el) {
+    el.style.transition = 'opacity 0.18s';
+    el.style.opacity = '0';
+    setTimeout(() => { el.textContent = text; el.style.opacity = '1'; }, 180);
   }
 
-  // Mouth animation
+  // Mouth
   const mouth = document.getElementById('botMouth');
-  if (mouth) mouth.classList.add('talking');
-  isTalking = true;
+  if (mouth) mouth.classList.add('speaking');
+  speaking = true;
 
-  // TTS
   if (synth) {
     synth.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1;
-    utterance.pitch = 1.1;
-    utterance.volume = 0.85;
-
-    // Pick a nicer voice if available
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate   = 1.0;
+    utt.pitch  = 1.1;
+    utt.volume = 0.9;
     const voices = synth.getVoices();
-    const preferred = voices.find(v => v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google UK English Female'));
-    if (preferred) utterance.voice = preferred;
-
-    utterance.onend = () => {
-      if (mouth) mouth.classList.remove('talking');
-      isTalking = false;
-      if (callback) callback();
+    const nice = voices.find(v =>
+      v.name.includes('Samantha') ||
+      v.name.includes('Google UK English Female') ||
+      v.name.includes('Female')
+    );
+    if (nice) utt.voice = nice;
+    utt.onend = utt.onerror = () => {
+      if (mouth) mouth.classList.remove('speaking');
+      speaking = false;
+      if (cb) cb();
     };
-
-    utterance.onerror = () => {
-      if (mouth) mouth.classList.remove('talking');
-      isTalking = false;
-    };
-
-    // TTS sometimes needs a delay
-    setTimeout(() => synth.speak(utterance), 100);
+    setTimeout(() => synth.speak(utt), 80);
   } else {
     setTimeout(() => {
-      if (mouth) mouth.classList.remove('talking');
-      isTalking = false;
-      if (callback) callback();
-    }, text.length * 60);
+      if (mouth) mouth.classList.remove('speaking');
+      speaking = false;
+      if (cb) cb();
+    }, text.length * 55);
   }
 }
 
-// Load voices async
-if (synth) {
-  synth.onvoiceschanged = () => synth.getVoices();
-  synth.getVoices();
-}
+if (synth) { synth.onvoiceschanged = () => synth.getVoices(); synth.getVoices(); }
 
-// ===== VOICE RECOGNITION =====
-let recognition = null;
-let isListening = false;
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// ── VOICE RECOGNITION ───────────────────
+let recog = null;
+let listening = false;
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 function toggleListening() {
-  if (!SpeechRecognition) {
-    botSpeak("Sorry, your browser doesn't support voice recognition. Try Chrome!");
-    return;
-  }
-  if (isListening) {
-    stopListening();
-  } else {
-    startListening();
-  }
+  if (!SR) { botSpeak("Voice isn't available in this browser. Please try Chrome!"); return; }
+  listening ? stopListen() : startListen();
 }
 
-function startListening() {
-  recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
+function startListen() {
+  recog = new SR();
+  recog.continuous = false;
+  recog.lang = 'en-US';
 
-  const micBtn = document.getElementById('micBtn');
-  const micIcon = document.getElementById('micIcon');
-  const voiceHint = document.getElementById('voiceHint');
+  const btn   = document.getElementById('micBtn');
+  const icon  = document.getElementById('micIcon');
+  const label = document.getElementById('micLabel');
 
-  if (micBtn) micBtn.classList.add('listening');
-  if (micIcon) micIcon.className = 'fas fa-stop';
-  if (voiceHint) voiceHint.textContent = 'Listening...';
-  isListening = true;
+  if (btn)   btn.classList.add('on');
+  if (icon)  icon.className = 'fas fa-stop';
+  if (label) label.textContent = 'Listening…';
+  listening = true;
 
-  recognition.start();
+  recog.start();
 
-  recognition.onresult = (event) => {
-    const command = event.results[0][0].transcript.toLowerCase().trim();
-    console.log('Heard:', command);
-    processVoiceCommand(command);
+  recog.onresult = e => {
+    const cmd = e.results[0][0].transcript.toLowerCase().trim();
+    handleVoice(cmd);
   };
-
-  recognition.onend = () => {
-    stopListening();
-  };
-
-  recognition.onerror = (e) => {
-    stopListening();
-    if (e.error !== 'no-speech') {
-      botSpeak("I didn't catch that. Try again!");
-    }
+  recog.onend   = () => stopListen();
+  recog.onerror = (e) => {
+    stopListen();
+    if (e.error !== 'no-speech') botSpeak("I didn't catch that. Try again!");
   };
 }
 
-function stopListening() {
-  isListening = false;
-  const micBtn = document.getElementById('micBtn');
-  const micIcon = document.getElementById('micIcon');
-  const voiceHint = document.getElementById('voiceHint');
-
-  if (micBtn) micBtn.classList.remove('listening');
-  if (micIcon) micIcon.className = 'fas fa-microphone';
-  if (voiceHint) voiceHint.textContent = 'Click mic to speak';
-
-  if (recognition) {
-    try { recognition.stop(); } catch(e) {}
-    recognition = null;
-  }
+function stopListen() {
+  listening = false;
+  const btn   = document.getElementById('micBtn');
+  const icon  = document.getElementById('micIcon');
+  const label = document.getElementById('micLabel');
+  if (btn)   btn.classList.remove('on');
+  if (icon)  icon.className = 'fas fa-microphone';
+  if (label) label.textContent = 'Speak to me';
+  if (recog) { try { recog.stop(); } catch(e){} recog = null; }
 }
 
-function processVoiceCommand(command) {
-  const cmd = command.toLowerCase();
+function handleVoice(cmd) {
+  if (cmd.includes('skill') || cmd.includes('tech') || cmd.includes('language') || cmd.includes('tool'))
+    return navigateTo('skills');
+  if (cmd.includes('project') || cmd.includes('build') || cmd.includes('work') || cmd.includes('made'))
+    return navigateTo('projects');
+  if (cmd.includes('train') || cmd.includes('course') || cmd.includes('internship description') || cmd.includes('experience'))
+    return navigateTo('experience');
+  if (cmd.includes('achiev') || cmd.includes('award') || cmd.includes('google') || cmd.includes('prize') || cmd.includes('recognition'))
+    return navigateTo('achievements');
+  if (cmd.includes('edu') || cmd.includes('school') || cmd.includes('college') || cmd.includes('university') || cmd.includes('degree'))
+    return navigateTo('education');
+  if (cmd.includes('certif'))
+    return navigateTo('certificates');
+  if (cmd.includes('resume') || cmd.includes('cv'))
+    return navigateTo('resume');
+  if (cmd.includes('contact') || cmd.includes('hire') || cmd.includes('reach') || cmd.includes('email') || cmd.includes('connect') || cmd.includes('meet'))
+    return navigateTo('contact');
+  if (cmd.includes('back') || cmd.includes('home') || cmd.includes('menu'))
+    return backToBot();
+  if (cmd.includes('who') || cmd.includes('about') || cmd.includes('introduce') || cmd.includes('tell me'))
+    return botSpeak("Yamini is a B.Tech Computer Science student at LPU, specialising in AI and Machine Learning. She builds real-world systems — from financial risk models to computer vision pipelines — and is actively seeking internships and collaborations.");
+  if (cmd.includes('hello') || cmd.includes('hi') || cmd.includes('hey'))
+    return botSpeak("Hello! Great to meet you. I'm here to help you explore Yamini's portfolio. What would you like to know?");
 
-  if (cmd.includes('skill') || cmd.includes('technology') || cmd.includes('language') || cmd.includes('tech')) {
-    navigateTo('skills');
-  } else if (cmd.includes('project') || cmd.includes('work') || cmd.includes('build') || cmd.includes('create')) {
-    navigateTo('projects');
-  } else if (cmd.includes('train') || cmd.includes('intern') || cmd.includes('course') || cmd.includes('experience')) {
-    navigateTo('experience');
-  } else if (cmd.includes('achiev') || cmd.includes('award') || cmd.includes('google') || cmd.includes('prize')) {
-    navigateTo('achievements');
-  } else if (cmd.includes('edu') || cmd.includes('school') || cmd.includes('university') || cmd.includes('college') || cmd.includes('degree')) {
-    navigateTo('education');
-  } else if (cmd.includes('certif') || cmd.includes('certificate')) {
-    navigateTo('certificates');
-  } else if (cmd.includes('contact') || cmd.includes('email') || cmd.includes('reach') || cmd.includes('hire') || cmd.includes('connect') || cmd.includes('meet')) {
-    navigateTo('contact');
-  } else if (cmd.includes('resume') || cmd.includes('cv') || cmd.includes('download')) {
-    navigateTo('resume');
-  } else if (cmd.includes('home') || cmd.includes('back') || cmd.includes('go back')) {
-    backToBot();
-  } else if (cmd.includes('who') || cmd.includes('about') || cmd.includes('introduce') || cmd.includes('tell me about')) {
-    botSpeak("Yamini is a B.Tech CSE student at LPU with a 8.71 CGPA, specializing in AI and Machine Learning. She has built projects like a Loan Default Risk Analyzer with 93.5% accuracy and was awarded by Google for AI safety work!");
-  } else if (cmd.includes('hello') || cmd.includes('hi') || cmd.includes('hey')) {
-    botSpeak("Hello! Great to meet you! I'm Yami, here to walk you through Yamini's amazing portfolio. What would you like to explore?");
-  } else if (cmd.includes('best') || cmd.includes('highlight') || cmd.includes('impressive')) {
-    botSpeak("Yamini's most impressive work includes a Loan Default Risk Analyzer with 93.5% accuracy, and she was recognized by Google for contributing to AI safety — earning over 9,500 rupees as an award!");
-  } else {
-    botSpeak(`I heard: "${command}". You can ask me about skills, projects, training, achievements, education, certificates, contact, or resume!`);
-  }
+  botSpeak(`I heard: "${cmd}". Try asking about skills, projects, training, achievements, education, certificates, or contact!`);
 }
 
-// ===== PROJECT MODALS =====
+
+// ── PROJECT MODALS ──────────────────────
 const projectData = {
   loan: {
-    title: "Loan Default Risk Analyzer",
-    subtitle: "Financial AI · Machine Learning",
-    icon: "fas fa-chart-line",
-    gradient: "linear-gradient(135deg,#ff8c32,#e85d75)",
-    period: "Dec 2025 – Present",
-    overview: "A production-grade machine learning pipeline that predicts whether a loan applicant will default, using customer financial data and behavioral indicators.",
-    highlights: [
-      "Trained and compared Random Forest, XGBoost, and LightGBM algorithms",
-      "Achieved maximum accuracy of 93.5% and ROC-AUC score of 0.97",
-      "Optimized data preprocessing, feature selection, and model evaluation workflows",
-      "Built for scalable and reliable prediction performance on real-world financial data"
+    title: 'Loan Default Risk Analyzer',
+    sub: 'Financial AI · Machine Learning · Dec 2025',
+    icon: 'fas fa-chart-line',
+    grad: 'linear-gradient(135deg,#e8845a,#e85a7a)',
+    overview: 'A machine learning pipeline that predicts whether a loan applicant will default, using customer financial data and behavioral indicators.',
+    points: [
+      'Trained and compared Random Forest, XGBoost, and LightGBM algorithms on financial datasets',
+      'Achieved maximum accuracy of 93.5% and ROC-AUC score of 0.97',
+      'Optimized data preprocessing, feature selection, and model evaluation for scalability',
+      'Produced actionable risk scores to support loan approval decisions',
     ],
-    stack: ["Python", "XGBoost", "LightGBM", "Random Forest", "Pandas", "Scikit-Learn"],
-    github: "https://github.com/Yamini-Soni"
+    stack: ['Python', 'XGBoost', 'LightGBM', 'Random Forest', 'Scikit-Learn', 'Pandas', 'NumPy'],
+    gh: 'https://github.com/Yamini-Soni',
   },
   gold: {
-    title: "AI-Powered Gold Price Predictor",
-    subtitle: "Financial AI · NLP · Real-Time Analytics",
-    icon: "fas fa-coins",
-    gradient: "linear-gradient(135deg,#f5c518,#ff8c32)",
-    period: "Jul 2025",
-    overview: "A comprehensive gold price analytics platform integrating multi-country price data, currency rates, and NLP-powered financial news sentiment analysis.",
-    highlights: [
-      "Consolidated multi-country gold price data through automated API pipelines (Yahoo Finance, Exchange Rate APIs)",
-      "Extracted market sentiment from financial news using NLP techniques (NewsAPI)",
-      "Aligned sentiment signals with short-term price movement patterns",
-      "Built an interactive Streamlit dashboard with multi-market comparisons (India, USA, Dubai)"
+    title: 'AI-Powered Gold Price Predictor',
+    sub: 'Financial AI · NLP · Real-Time APIs · Jul 2025',
+    icon: 'fas fa-coins',
+    grad: 'linear-gradient(135deg,#d4a84b,#e8845a)',
+    overview: 'A multi-country gold price analytics platform that combines live data pipelines with NLP-driven sentiment analysis from financial news.',
+    points: [
+      'Automated multi-country price data collection via Yahoo Finance and Exchange Rate APIs',
+      'Extracted market sentiment from financial news using NLP techniques (NewsAPI)',
+      'Aligned sentiment signals with short-term gold price movement patterns',
+      'Built an interactive Streamlit dashboard comparing India, USA, and Dubai markets in real time',
     ],
-    stack: ["Python", "NLP", "Streamlit", "Yahoo Finance API", "NewsAPI", "ML Algorithms"],
-    github: "https://github.com/Yamini-Soni"
+    stack: ['Python', 'NLP', 'Streamlit', 'Yahoo Finance API', 'NewsAPI', 'ML Algorithms', 'Pandas'],
+    gh: 'https://github.com/Yamini-Soni',
   },
   face: {
-    title: "Face Recognition Attendance System",
-    subtitle: "Computer Vision · Deep Learning",
-    icon: "fas fa-user-circle",
-    gradient: "linear-gradient(135deg,#4ecdc4,#a78bfa)",
-    period: "Apr 2025",
-    overview: "A real-time face recognition system using deep learning to automate attendance tracking — eliminating manual roll calls entirely.",
-    highlights: [
-      "Used dlib's ResNet model to generate 128-dimensional face encodings for each identity",
-      "Implemented real-time face detection, encoding, and matching via webcam",
-      "Achieved recognition accuracy over 90% in real-world conditions",
-      "Developed a full GUI for image capture, model training, and result visualization"
+    title: 'Face Recognition Attendance System',
+    sub: 'Computer Vision · Deep Learning · Apr 2025',
+    icon: 'fas fa-user-circle',
+    grad: 'linear-gradient(135deg,#5a8ee8,#7dbc8c)',
+    overview: 'A real-time attendance system using deep learning face recognition — eliminating manual roll calls with over 90% recognition accuracy.',
+    points: [
+      'Used dlib's ResNet model to generate 128-dimensional face encodings for each identity',
+      'Implemented real-time face detection, encoding, and matching via webcam feed',
+      'Automated attendance logging triggered on successful face match',
+      'Built a full GUI for image capture, model training, and live recognition visualization',
     ],
-    stack: ["Python", "OpenCV", "dlib", "Deep Learning", "ResNet", "GUI (Tkinter)"],
-    github: "https://github.com/Yamini-Soni"
-  }
+    stack: ['Python', 'OpenCV', 'dlib', 'ResNet', 'Deep Learning', 'Tkinter GUI'],
+    gh: 'https://github.com/Yamini-Soni',
+  },
+  os: {
+    title: 'OS Process Visualization Tool',
+    sub: 'Systems · Visualization · 2024',
+    icon: 'fas fa-microchip',
+    grad: 'linear-gradient(135deg,#a47fd0,#5a8ee8)',
+    overview: 'An interactive dashboard that visualizes CPU scheduling algorithms with animated Gantt charts, helping understand OS concepts clearly.',
+    points: [
+      'Implemented FCFS, SJF, Round Robin, and Priority scheduling algorithms',
+      'Rendered animated Gantt chart timelines for each algorithm output',
+      'Added side-by-side algorithm comparison with turnaround and waiting time metrics',
+      'Built as an educational tool to make OS concepts visually intuitive',
+    ],
+    stack: ['Python', 'Visualization', 'OS Concepts', 'Data Structures'],
+    gh: 'https://github.com/Yamini-Soni',
+  },
 };
 
 function openProject(key) {
-  const data = projectData[key];
-  if (!data) return;
-  const modal = document.getElementById('projectModal');
-  const content = document.getElementById('modalContent');
-  content.innerHTML = `
-    <div class="modal-header">
-      <div class="modal-icon" style="background:${data.gradient}">
-        <i class="${data.icon}"></i>
-      </div>
-      <div>
-        <h2>${data.title}</h2>
-        <p>${data.subtitle} · ${data.period}</p>
-      </div>
+  const d = projectData[key];
+  if (!d) return;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="m-header">
+      <div class="m-icon" style="background:${d.grad}"><i class="${d.icon}"></i></div>
+      <div><h2>${d.title}</h2><p>${d.sub}</p></div>
     </div>
-    <div class="modal-section">
-      <h4>Overview</h4>
-      <p>${data.overview}</p>
+    <div class="m-section">
+      <div class="m-section-label">Overview</div>
+      <p>${d.overview}</p>
     </div>
-    <div class="modal-section">
-      <h4>What I built & how</h4>
-      <ul>${data.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
+    <div class="m-section">
+      <div class="m-section-label">What was built & how</div>
+      <ul>${d.points.map(p => `<li>${p}</li>`).join('')}</ul>
     </div>
-    <div class="modal-section">
-      <h4>Tech Stack</h4>
-      <div class="modal-tags">${data.stack.map(s => `<span>${s}</span>`).join('')}</div>
+    <div class="m-section">
+      <div class="m-section-label">Tech stack</div>
+      <div class="m-chips">${d.stack.map(s => `<span>${s}</span>`).join('')}</div>
     </div>
-    <a href="${data.github}" target="_blank" class="modal-link">
-      <i class="fab fa-github"></i> View on GitHub
-    </a>
+    <a href="${d.gh}" target="_blank" class="m-gh-link"><i class="fab fa-github"></i> View on GitHub</a>
   `;
-  modal.classList.add('open');
+  document.getElementById('projModal').classList.add('open');
 }
 
 function closeProject() {
-  document.getElementById('projectModal').classList.remove('open');
+  document.getElementById('projModal').classList.remove('open');
 }
 
-// Close modal on backdrop click
-document.getElementById('projectModal')?.addEventListener('click', (e) => {
-  if (e.target === document.getElementById('projectModal')) closeProject();
+document.getElementById('projModal')?.addEventListener('click', e => {
+  if (e.target === document.getElementById('projModal')) closeProject();
 });
 
-// ===== BOT IDLE BEHAVIOR =====
-const idleMessages = [
-  "Did you know Yamini's Loan Default model hits 93.5% accuracy? Pretty impressive!",
-  "Ask me about Yamini's Google achievement — she earned ₹9,540 for AI safety work!",
-  "Yamini is actively looking for AI/ML internships. Check out the Contact section!",
-  "Yamini scored 95.6% in her class 12 PCM exams. Top of her class!",
-  "Want to see Yamini's projects? Click 'Projects' or just say it!",
-  "Yamini is proficient in Python, XGBoost, OpenCV, and NLP. Ask me about her skills!",
+
+// ── SKILL BAR ANIMATION ─────────────────
+let skillsAnimated = false;
+
+function animateSkillBars() {
+  if (document.getElementById('page-skills').classList.contains('active') && !skillsAnimated) {
+    skillsAnimated = true;
+    document.querySelectorAll('.sk-bar').forEach((bar, i) => {
+      setTimeout(() => {
+        bar.style.width = bar.style.getPropertyValue('--p') || getComputedStyle(bar).getPropertyValue('--p');
+      }, i * 80);
+    });
+  }
+}
+
+// Watch for skills page becoming active
+const skillsPage = document.getElementById('page-skills');
+if (skillsPage) {
+  new MutationObserver(() => {
+    if (skillsPage.classList.contains('active')) {
+      setTimeout(animateSkillBars, 100);
+    }
+  }).observe(skillsPage, { attributes: true, attributeFilter: ['class'] });
+}
+
+
+// ── BOT IDLE PROMPTS ────────────────────
+const idlePrompts = [
+  "Yamini is actively seeking internships and collaborations in AI and ML. Want to see her contact details?",
+  "Yamini's Loan Default Analyzer achieves a 93.5% accuracy — want to see how it was built?",
+  "Yamini was recognized by Google for contributing to AI safety research. Check out her achievements!",
+  "Want to see Yamini's skills, projects, or training background? Just ask or click a topic!",
+  "Yamini is trained in Generative AI, NLP, and Transformers. Ask me about her training!",
 ];
 
 let idleTimer = null;
+let idleIdx   = 0;
 
-function resetIdleTimer() {
+function resetIdle() {
   clearTimeout(idleTimer);
-  if (document.getElementById('page-bot').classList.contains('active')) {
-    idleTimer = setTimeout(() => {
-      if (!isTalking && !isListening) {
-        const msg = idleMessages[Math.floor(Math.random() * idleMessages.length)];
-        botSpeak(msg);
-      }
-      resetIdleTimer();
-    }, 12000);
-  }
+  if (!document.getElementById('page-bot').classList.contains('active')) return;
+  idleTimer = setTimeout(() => {
+    if (!speaking && !listening) {
+      botSpeak(idlePrompts[idleIdx % idlePrompts.length]);
+      idleIdx++;
+    }
+    resetIdle();
+  }, 14000);
 }
 
-document.addEventListener('click', resetIdleTimer);
-document.addEventListener('keypress', resetIdleTimer);
+document.addEventListener('click',    resetIdle);
+document.addEventListener('keypress', resetIdle);
 
-// ===== ORBIT ANIMATION STAGGER =====
-document.querySelectorAll('.orbit-item').forEach((item, i) => {
-  item.style.animationDelay = `${i * 0.1}s`;
-});
+new MutationObserver(() => {
+  if (document.getElementById('page-bot').classList.contains('active')) resetIdle();
+  else clearTimeout(idleTimer);
+}).observe(document.getElementById('page-bot'), { attributes: true, attributeFilter: ['class'] });
 
-// ===== INIT =====
+
+// ── INIT ────────────────────────────────
 window.addEventListener('load', () => {
-  // Welcome animation on home
-  const heroName = document.querySelector('.hero-name');
-  if (heroName) heroName.style.opacity = '0';
-  setTimeout(() => {
-    if (heroName) {
-      heroName.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-      heroName.style.opacity = '1';
-    }
-  }, 200);
+  // Stagger home text in
+  const els = document.querySelectorAll('.home-badge, .home-h1, .home-sub, .home-links, .home-stats');
+  els.forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = `opacity 0.5s ${i * 0.1}s ease, transform 0.5s ${i * 0.1}s ease`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }));
+  });
 });
-
-// Trigger idle when bot page becomes visible
-const botPageObserver = new MutationObserver(() => {
-  if (document.getElementById('page-bot').classList.contains('active')) {
-    resetIdleTimer();
-  } else {
-    clearTimeout(idleTimer);
-  }
-});
-const botPage = document.getElementById('page-bot');
-if (botPage) botPageObserver.observe(botPage, { attributes: true, attributeFilter: ['class'] });
