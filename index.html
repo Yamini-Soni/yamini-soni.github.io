@@ -1,160 +1,517 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-<title>Yamini Soni | Portfolio</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yamini Soni | AI/ML Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 </head>
-
 <body>
 
-<header>
+<!-- PARTICLE CANVAS -->
+<canvas id="particles"></canvas>
 
-<h2 class="logo">Hi !</h2>
+<!-- CURSOR -->
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
 
-<nav>
-<ul>
-
-<li onclick="showSection('home')">Home</li>
-<li onclick="showSection('about')">About</li>
-<li onclick="showSection('skills')">Skills</li>
-<li onclick="showSection('projects')">Projects</li>
-<li onclick="showSection('contact')">Contact</li>
-
-</ul>
-</nav>
-
-</header>
-
-<main>
-
-<!-- HOME -->
-
-<section id="home" class="section active">
-
-<canvas id="ai-network"></canvas>
-
-<div class="home-box">
-
-<img src="images/profile.jpeg" class="profile">
-
-<h1>Yamini Soni</h1>
-
-<p class="tag">AI • ML Enthusiast</p>
-
+<!-- ===== HOME PAGE ===== -->
+<div id="page-home" class="page active">
+  <div class="home-layout">
+    <div class="home-left">
+      <div class="greeting-line">
+        <span class="greeting-dot"></span>
+        <span>Available for opportunities</span>
+      </div>
+      <h1 class="hero-name">
+        <span class="name-line">Yamini</span>
+        <span class="name-line accent">Soni</span>
+      </h1>
+      <p class="hero-role">AI · ML Engineer</p>
+      <p class="hero-desc">Building intelligent systems that decode patterns, predict outcomes, and create impact. B.Tech CSE @ LPU · CGPA 8.71</p>
+      <div class="home-socials">
+        <a href="https://github.com/Yamini-Soni" target="_blank" class="social-pill"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.linkedin.com/in/yamini-soni28/" target="_blank" class="social-pill"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="mailto:yaminis2819@gmail.com" class="social-pill"><i class="fas fa-envelope"></i> Email</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Projects</span></div>
+        <div class="stat"><span class="stat-num">93.5%</span><span class="stat-label">Best Accuracy</span></div>
+        <div class="stat"><span class="stat-num">8.71</span><span class="stat-label">CGPA</span></div>
+      </div>
+    </div>
+    <div class="home-right">
+      <div class="profile-ring-outer">
+        <div class="profile-ring-inner">
+          <img src="images/profile.jpeg" class="profile-img" alt="Yamini Soni">
+          <div class="profile-badge">AI/ML</div>
+        </div>
+        <svg class="ring-svg" viewBox="0 0 300 300">
+          <circle cx="150" cy="150" r="140" fill="none" stroke="rgba(255,140,50,0.15)" stroke-width="1"/>
+          <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(255,140,50,0.1)" stroke-width="1" stroke-dasharray="4 8"/>
+        </svg>
+        <div class="orbit-dot" style="--angle:0deg"></div>
+        <div class="orbit-dot" style="--angle:120deg"></div>
+        <div class="orbit-dot" style="--angle:240deg"></div>
+      </div>
+    </div>
+  </div>
+  <div class="meet-bot-cta" onclick="goToBot()">
+    <div class="bot-cta-inner">
+      <div class="bot-face-mini">
+        <div class="eye-mini"></div><div class="eye-mini"></div>
+      </div>
+      <span>Talk to my AI assistant →</span>
+    </div>
+  </div>
 </div>
 
-<div class="voice-bubble" onclick="toggleVoice()">🎤</div>
+<!-- ===== BOT HUB PAGE ===== -->
+<div id="page-bot" class="page">
+  <div class="bot-hub">
 
-</section>
+    <!-- Bot -->
+    <div class="bot-zone">
+      <div class="bot-container" id="botContainer">
+        <div class="bot-glow"></div>
+        <div class="bot-head" id="botHead">
+          <div class="bot-face">
+            <div class="bot-eye" id="eyeLeft">
+              <div class="bot-pupil" id="pupilLeft"></div>
+              <div class="bot-shine"></div>
+            </div>
+            <div class="bot-eye" id="eyeRight">
+              <div class="bot-pupil" id="pupilRight"></div>
+              <div class="bot-shine"></div>
+            </div>
+          </div>
+          <div class="bot-mouth" id="botMouth">
+            <div class="bot-mouth-inner"></div>
+          </div>
+          <div class="bot-antenna">
+            <div class="bot-antenna-ball"></div>
+          </div>
+        </div>
+        <div class="bot-body">
+          <div class="bot-chest-light"></div>
+        </div>
+      </div>
 
+      <!-- Speech bubble -->
+      <div class="speech-bubble" id="speechBubble">
+        <p id="botText">Hi! I'm Yami — Yamini's AI assistant. Ask me anything about her!</p>
+      </div>
 
-<!-- ABOUT -->
+      <!-- Voice controls -->
+      <div class="voice-controls">
+        <button class="mic-btn" id="micBtn" onclick="toggleListening()">
+          <i class="fas fa-microphone" id="micIcon"></i>
+        </button>
+        <span class="voice-hint" id="voiceHint">Click mic to speak</span>
+      </div>
+    </div>
 
-<section id="about" class="section">
+    <!-- Circular Nav -->
+    <div class="orbit-nav" id="orbitNav">
+      <div class="orbit-center-label">Ask me about</div>
+      <div class="orbit-item" style="--i:0" data-section="skills" onclick="navigateTo('skills')">
+        <div class="orbit-icon"><i class="fas fa-code"></i></div>
+        <span>Skills</span>
+      </div>
+      <div class="orbit-item" style="--i:1" data-section="projects" onclick="navigateTo('projects')">
+        <div class="orbit-icon"><i class="fas fa-rocket"></i></div>
+        <span>Projects</span>
+      </div>
+      <div class="orbit-item" style="--i:2" data-section="experience" onclick="navigateTo('experience')">
+        <div class="orbit-icon"><i class="fas fa-briefcase"></i></div>
+        <span>Training</span>
+      </div>
+      <div class="orbit-item" style="--i:3" data-section="achievements" onclick="navigateTo('achievements')">
+        <div class="orbit-icon"><i class="fas fa-trophy"></i></div>
+        <span>Achievements</span>
+      </div>
+      <div class="orbit-item" style="--i:4" data-section="education" onclick="navigateTo('education')">
+        <div class="orbit-icon"><i class="fas fa-graduation-cap"></i></div>
+        <span>Education</span>
+      </div>
+      <div class="orbit-item" style="--i:5" data-section="certificates" onclick="navigateTo('certificates')">
+        <div class="orbit-icon"><i class="fas fa-certificate"></i></div>
+        <span>Certificates</span>
+      </div>
+      <div class="orbit-item" style="--i:6" data-section="contact" onclick="navigateTo('contact')">
+        <div class="orbit-icon"><i class="fas fa-paper-plane"></i></div>
+        <span>Contact</span>
+      </div>
+      <div class="orbit-item" style="--i:7" data-section="resume" onclick="navigateTo('resume')">
+        <div class="orbit-icon"><i class="fas fa-file-alt"></i></div>
+        <span>Resume</span>
+      </div>
+    </div>
 
-<h2 class="about-title">About Me</h2>
+  </div>
+  <button class="back-home-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i> Back</button>
+</div>
 
-<p class="about-text" id="typing">
-    
-
-
-
-
-</p>
-
-</section>
-
+<!-- ===== SECTION PAGES ===== -->
 
 <!-- SKILLS -->
-
-<section id="skills" class="section">
-
-<h2>Skills</h2>
-
-<div class="skill-grid">
-
-<div class="card">Python</div>
-<div class="card">C++</div>
-<div class="card">Machine Learning</div>
-<div class="card">Java</div>
-<div class="card">HTML & CSS</div>
-
-
+<div id="page-skills" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Skills</h2>
+  </div>
+  <div class="skills-layout">
+    <div class="skills-category">
+      <h3 class="cat-title"><span class="cat-dot" style="background:#ff8c32"></span>Languages</h3>
+      <div class="skill-pills">
+        <div class="skill-pill" style="--c:#ff8c32">Python<div class="skill-bar" style="--w:90%"></div></div>
+        <div class="skill-pill" style="--c:#e85d75">C++<div class="skill-bar" style="--w:80%"></div></div>
+        <div class="skill-pill" style="--c:#4ecdc4">Java<div class="skill-bar" style="--w:75%"></div></div>
+        <div class="skill-pill" style="--c:#a78bfa">C<div class="skill-bar" style="--w:70%"></div></div>
+      </div>
+    </div>
+    <div class="skills-category">
+      <h3 class="cat-title"><span class="cat-dot" style="background:#4ecdc4"></span>ML / AI Libraries</h3>
+      <div class="skill-pills">
+        <div class="skill-pill" style="--c:#4ecdc4">Scikit-Learn<div class="skill-bar" style="--w:88%"></div></div>
+        <div class="skill-pill" style="--c:#ff8c32">NumPy / Pandas<div class="skill-bar" style="--w:92%"></div></div>
+        <div class="skill-pill" style="--c:#e85d75">XGBoost / LightGBM<div class="skill-bar" style="--w:85%"></div></div>
+        <div class="skill-pill" style="--c:#a78bfa">OpenCV / dlib<div class="skill-bar" style="--w:78%"></div></div>
+        <div class="skill-pill" style="--c:#4ecdc4">NLP / Transformers<div class="skill-bar" style="--w:75%"></div></div>
+      </div>
+    </div>
+    <div class="skills-category">
+      <h3 class="cat-title"><span class="cat-dot" style="background:#a78bfa"></span>Web & Tools</h3>
+      <div class="skill-pills">
+        <div class="skill-pill" style="--c:#a78bfa">HTML & CSS<div class="skill-bar" style="--w:80%"></div></div>
+        <div class="skill-pill" style="--c:#ff8c32">GitHub<div class="skill-bar" style="--w:85%"></div></div>
+        <div class="skill-pill" style="--c:#e85d75">Streamlit<div class="skill-bar" style="--w:80%"></div></div>
+        <div class="skill-pill" style="--c:#4ecdc4">Jupyter Notebook<div class="skill-bar" style="--w:90%"></div></div>
+      </div>
+    </div>
+    <div class="skills-category">
+      <h3 class="cat-title"><span class="cat-dot" style="background:#e85d75"></span>Soft Skills</h3>
+      <div class="skill-pills">
+        <div class="skill-pill" style="--c:#e85d75">Problem Solving<div class="skill-bar" style="--w:95%"></div></div>
+        <div class="skill-pill" style="--c:#a78bfa">Analytical Thinking<div class="skill-bar" style="--w:92%"></div></div>
+        <div class="skill-pill" style="--c:#4ecdc4">Team Collaboration<div class="skill-bar" style="--w:88%"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="bot-sidebar-mini" id="botSidebarSkills">
+    <div class="bot-mini-face">
+      <div class="eye-sm"></div><div class="eye-sm"></div>
+    </div>
+    <div class="bot-mini-bubble">Yamini is proficient in Python, ML frameworks, and deep learning. Ask me anything else!</div>
+  </div>
 </div>
-
-</section>
-
 
 <!-- PROJECTS -->
+<div id="page-projects" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Projects</h2>
+  </div>
+  <div class="projects-grid">
 
-<section id="projects" class="section">
+    <div class="project-card-new" onclick="openProject('loan')">
+      <div class="pcard-glow" style="--gc:#ff8c32"></div>
+      <div class="pcard-top">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#ff8c32,#e85d75)"><i class="fas fa-chart-line"></i></div>
+        <div class="pcard-links">
+          <a href="https://github.com/Yamini-Soni" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <h3>Loan Default Risk Analyzer</h3>
+      <p>ML model predicting loan default risk — 93.5% accuracy, ROC-AUC 0.97</p>
+      <div class="pcard-tags">
+        <span>Python</span><span>XGBoost</span><span>LightGBM</span><span>Random Forest</span>
+      </div>
+      <div class="pcard-arrow"><i class="fas fa-arrow-right"></i></div>
+    </div>
 
-<h2>Projects</h2>
+    <div class="project-card-new" onclick="openProject('gold')">
+      <div class="pcard-glow" style="--gc:#f5c518"></div>
+      <div class="pcard-top">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#f5c518,#ff8c32)"><i class="fas fa-coins"></i></div>
+        <div class="pcard-links">
+          <a href="https://github.com/Yamini-Soni" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <h3>AI Gold Price Predictor</h3>
+      <p>Multi-country gold analysis with NLP sentiment from financial news</p>
+      <div class="pcard-tags">
+        <span>Python</span><span>NLP</span><span>Streamlit</span><span>APIs</span>
+      </div>
+      <div class="pcard-arrow"><i class="fas fa-arrow-right"></i></div>
+    </div>
 
-<div class="project-grid">
+    <div class="project-card-new" onclick="openProject('face')">
+      <div class="pcard-glow" style="--gc:#4ecdc4"></div>
+      <div class="pcard-top">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,#4ecdc4,#a78bfa)"><i class="fas fa-user-circle"></i></div>
+        <div class="pcard-links">
+          <a href="https://github.com/Yamini-Soni" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <h3>Face Recognition Attendance</h3>
+      <p>Deep learning attendance system using dlib ResNet — 90%+ accuracy</p>
+      <div class="pcard-tags">
+        <span>Python</span><span>OpenCV</span><span>dlib</span><span>Deep Learning</span>
+      </div>
+      <div class="pcard-arrow"><i class="fas fa-arrow-right"></i></div>
+    </div>
 
-<div class="project-card">
-<h3>Loan Default Risk Analyzer</h3>
-<p>ML model predicting loan default risk using financial behaviour data.</p>
+  </div>
+
+  <!-- Project Detail Modal -->
+  <div class="project-modal" id="projectModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeProject()"><i class="fas fa-times"></i></button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="bot-sidebar-mini" id="botSidebarProjects">
+    <div class="bot-mini-face">
+      <div class="eye-sm"></div><div class="eye-sm"></div>
+    </div>
+    <div class="bot-mini-bubble">Click any project to dive deeper. Ask me for more details!</div>
+  </div>
 </div>
 
-<div class="project-card">
-<h3>AI Gold Price Predictor</h3>
-<p>Analyzes global gold price trends using ML and financial news sentiment.</p>
+<!-- EXPERIENCE / TRAINING -->
+<div id="page-experience" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Training</h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div>
+            <h3>AI-Powered NLP using Python</h3>
+            <p class="tl-org">AlgoTutor Academy</p>
+          </div>
+          <span class="tl-date">Jun – Jul 2025</span>
+        </div>
+        <ul class="tl-points">
+          <li>Gained hands-on experience with Generative AI, Transformer architectures, LLMs</li>
+          <li>Built an AI-Powered Gold Price Analyzer integrating real-time data pipelines</li>
+          <li>Designed an interactive analytics dashboard using Streamlit with multi-market views</li>
+          <li>Worked on chatbot development, sentiment analysis, and text classification</li>
+        </ul>
+        <div class="tl-tags">
+          <span>GenAI</span><span>Transformers</span><span>LLMs</span><span>Streamlit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bot-sidebar-mini">
+    <div class="bot-mini-face"><div class="eye-sm"></div><div class="eye-sm"></div></div>
+    <div class="bot-mini-bubble">Yamini trained at AlgoTutor on cutting-edge NLP and GenAI. What else would you like to know?</div>
+  </div>
 </div>
 
-<div class="project-card">
-<h3>Face Recognition Attendance</h3>
-<p>Deep learning system using dlib ResNet face encodings.</p>
+<!-- ACHIEVEMENTS -->
+<div id="page-achievements" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Achievements</h2>
+  </div>
+  <div class="achievements-grid">
+    <div class="achieve-card">
+      <div class="achieve-glow"></div>
+      <div class="achieve-icon"><i class="fab fa-google"></i></div>
+      <div class="achieve-content">
+        <h3>Google Adversarial Nibbler Project</h3>
+        <p class="achieve-org">Google · Jan 2025</p>
+        <p class="achieve-desc">Awarded <strong>₹9,540</strong> for contributions to AI safety and image-generation evaluation. Part of a global effort to improve safety in generative AI systems.</p>
+      </div>
+      <div class="achieve-badge">₹9,540 Award</div>
+    </div>
+    <div class="achieve-card">
+      <div class="achieve-glow" style="--gc:#4ecdc4"></div>
+      <div class="achieve-icon" style="background:linear-gradient(135deg,#4ecdc4,#a78bfa)"><i class="fas fa-graduation-cap"></i></div>
+      <div class="achieve-content">
+        <h3>Academic Excellence</h3>
+        <p class="achieve-org">LPU · B.Tech CSE</p>
+        <p class="achieve-desc">Maintaining a CGPA of <strong>8.71</strong> in Computer Science & Engineering while simultaneously building real-world AI/ML projects.</p>
+      </div>
+      <div class="achieve-badge" style="background:linear-gradient(135deg,#4ecdc4,#a78bfa)">CGPA 8.71</div>
+    </div>
+    <div class="achieve-card">
+      <div class="achieve-glow" style="--gc:#f5c518"></div>
+      <div class="achieve-icon" style="background:linear-gradient(135deg,#f5c518,#ff8c32)"><i class="fas fa-school"></i></div>
+      <div class="achieve-content">
+        <h3>School Topper — Intermediate</h3>
+        <p class="achieve-org">Om Shree Sant Academy · 2022</p>
+        <p class="achieve-desc">Scored <strong>95.6%</strong> in PCM stream (Physics, Chemistry, Mathematics) in Class 12th board examinations.</p>
+      </div>
+      <div class="achieve-badge" style="background:linear-gradient(135deg,#f5c518,#ff8c32)">95.6%</div>
+    </div>
+  </div>
+  <div class="bot-sidebar-mini">
+    <div class="bot-mini-face"><div class="eye-sm"></div><div class="eye-sm"></div></div>
+    <div class="bot-mini-bubble">Yamini was recognized by Google for AI safety work! Pretty impressive, right?</div>
+  </div>
 </div>
 
-<div class="project-card">
-<h3>OS Process Visualization Tool</h3>
-<p>Dashboard for CPU scheduling algorithms with Gantt charts.</p>
+<!-- EDUCATION -->
+<div id="page-education" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Education</h2>
+  </div>
+  <div class="edu-cards">
+    <div class="edu-card">
+      <div class="edu-logo"><i class="fas fa-university"></i></div>
+      <div class="edu-info">
+        <h3>B.Tech — Computer Science & Engineering</h3>
+        <p class="edu-org">Lovely Professional University, Phagwara, Punjab</p>
+        <p class="edu-period">Aug 2023 – Present</p>
+        <div class="edu-score">CGPA: <strong>8.71</strong></div>
+        <div class="edu-highlights">
+          <span>AI/ML</span><span>Deep Learning</span><span>Data Structures</span><span>Operating Systems</span>
+        </div>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-logo" style="background:linear-gradient(135deg,#4ecdc4,#a78bfa)"><i class="fas fa-school"></i></div>
+      <div class="edu-info">
+        <h3>Intermediate — PCM</h3>
+        <p class="edu-org">Om Shree Sant Academy School, Pipar City, Rajasthan</p>
+        <p class="edu-period">Jun 2021 – Mar 2022</p>
+        <div class="edu-score">Percentage: <strong>95.6%</strong></div>
+        <div class="edu-highlights"><span>Physics</span><span>Chemistry</span><span>Mathematics</span></div>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-logo" style="background:linear-gradient(135deg,#f5c518,#ff8c32)"><i class="fas fa-book"></i></div>
+      <div class="edu-info">
+        <h3>Matriculation</h3>
+        <p class="edu-org">Om Shree Sant Academy School, Pipar City, Rajasthan</p>
+        <p class="edu-period">Jun 2019 – Mar 2020</p>
+        <div class="edu-score">Percentage: <strong>95%</strong></div>
+      </div>
+    </div>
+  </div>
+  <div class="bot-sidebar-mini">
+    <div class="bot-mini-face"><div class="eye-sm"></div><div class="eye-sm"></div></div>
+    <div class="bot-mini-bubble">Yamini consistently scores above 95% — a true high achiever!</div>
+  </div>
 </div>
 
+<!-- CERTIFICATES -->
+<div id="page-certificates" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Certificates</h2>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-ribbon"></div>
+      <div class="cert-icon"><i class="fas fa-globe"></i></div>
+      <h3>DU Lab Summer School</h3>
+      <p class="cert-org">ITMO University, Russia</p>
+      <p class="cert-date">Aug 2025</p>
+      <div class="cert-seal"><i class="fas fa-check-circle"></i> Verified</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-ribbon" style="background:linear-gradient(135deg,#4285f4,#34a853)"></div>
+      <div class="cert-icon" style="background:linear-gradient(135deg,#4285f4,#34a853)"><i class="fab fa-google"></i></div>
+      <h3>Adversarial Nibbler Project</h3>
+      <p class="cert-org">Google</p>
+      <p class="cert-date">Jan 2025</p>
+      <div class="cert-seal"><i class="fas fa-check-circle"></i> Verified</div>
+    </div>
+  </div>
+  <div class="bot-sidebar-mini">
+    <div class="bot-mini-face"><div class="eye-sm"></div><div class="eye-sm"></div></div>
+    <div class="bot-mini-bubble">Certified by Google and ITMO University! Want to know more?</div>
+  </div>
 </div>
-
-</section>
-
 
 <!-- CONTACT -->
-
-<section id="contact" class="section">
-
-<h2>Contact</h2>
-
-<p>
-<a href="mailto:yaminis2819@gmail.com" class="email-link">
-yaminis2819@gmail.com
-</a>
-</p>
-
-<div class="social">
-
-<a href="https://github.com/Yamini-Soni" target="_blank">
-<i class="fab fa-github"></i>
-</a>
-
-<a href="https://www.linkedin.com/in/yamini-soni28/" target="_blank">
-<i class="fab fa-linkedin"></i>
-</a>
-
+<div id="page-contact" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Let's Connect</h2>
+  </div>
+  <div class="contact-layout">
+    <div class="contact-left">
+      <p class="contact-intro">I'm currently looking for internships and collaboration opportunities in AI/ML. Whether you want to discuss a project, hire me, or just chat about AI — my inbox is open!</p>
+      <div class="contact-items">
+        <a href="mailto:yaminis2819@gmail.com" class="contact-item">
+          <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+          <div><strong>Email</strong><span>yaminis2819@gmail.com</span></div>
+        </a>
+        <a href="tel:+917986929374" class="contact-item">
+          <div class="ci-icon" style="background:linear-gradient(135deg,#4ecdc4,#a78bfa)"><i class="fas fa-phone"></i></div>
+          <div><strong>Phone</strong><span>+91 79869 29374</span></div>
+        </a>
+        <a href="https://www.linkedin.com/in/yamini-soni28/" target="_blank" class="contact-item">
+          <div class="ci-icon" style="background:linear-gradient(135deg,#0a66c2,#4ecdc4)"><i class="fab fa-linkedin"></i></div>
+          <div><strong>LinkedIn</strong><span>yamini-soni28</span></div>
+        </a>
+        <a href="https://github.com/Yamini-Soni" target="_blank" class="contact-item">
+          <div class="ci-icon" style="background:linear-gradient(135deg,#333,#555)"><i class="fab fa-github"></i></div>
+          <div><strong>GitHub</strong><span>Yamini-Soni</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="contact-right">
+      <div class="schedule-card">
+        <h3><i class="fas fa-calendar-check"></i> Schedule a Meeting</h3>
+        <p>Available for virtual meetings to discuss opportunities, collaborations, or projects.</p>
+        <div class="avail-chips">
+          <span class="chip-avail"><i class="fas fa-circle"></i> Available for Internships</span>
+          <span class="chip-avail"><i class="fas fa-circle"></i> Open to Collaborations</span>
+          <span class="chip-avail"><i class="fas fa-circle"></i> Research Projects</span>
+        </div>
+        <a href="mailto:yaminis2819@gmail.com?subject=Meeting%20Request" class="schedule-btn">
+          <i class="fas fa-paper-plane"></i> Send Meeting Request
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="bot-sidebar-mini">
+    <div class="bot-mini-face"><div class="eye-sm"></div><div class="eye-sm"></div></div>
+    <div class="bot-mini-bubble">Yamini is open to internships and collaborations. Don't hesitate to reach out!</div>
+  </div>
 </div>
 
-</section>
-
-</main>
+<!-- RESUME -->
+<div id="page-resume" class="page section-page">
+  <div class="section-header">
+    <button class="back-bot-btn" onclick="backToBot()"><i class="fas fa-robot"></i></button>
+    <h2 class="section-title">Resume</h2>
+  </div>
+  <div class="resume-center">
+    <div class="resume-card">
+      <div class="resume-icon"><i class="fas fa-file-alt"></i></div>
+      <h3>Yamini Soni — CV 2025</h3>
+      <p>AI/ML Engineer · B.Tech CSE · LPU</p>
+      <div class="resume-details">
+        <span><i class="fas fa-check"></i> 3+ Projects</span>
+        <span><i class="fas fa-check"></i> Google Certified</span>
+        <span><i class="fas fa-check"></i> CGPA 8.71</span>
+      </div>
+      <a href="CV__2_.pdf" download class="download-btn"><i class="fas fa-download"></i> Download Resume</a>
+    </div>
+  </div>
+  <div class="bot-sidebar-mini">
+    <div class="bot-mini-face"><div class="eye-sm"></div><div class="eye-sm"></div></div>
+    <div class="bot-mini-bubble">Download Yamini's full resume here!</div>
+  </div>
+</div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
