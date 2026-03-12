@@ -1,663 +1,1204 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yamini Soni — AI/ML Engineer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* ══════════ VARIABLES ══════════ */
+:root {
+  --bg:       #faf8f4;
+  --bg2:      #f3f0ea;
+  --surface:  #ffffff;
+  --border:   #e8e2d9;
+  --border2:  #d6cfc3;
 
-<canvas id="bg-canvas"></canvas>
-<div class="cursor-dot"></div>
-<div class="cursor-ring"></div>
+  --ink:      #1a1714;
+  --ink2:     #4a4540;
+  --ink3:     #8a837a;
 
-<!-- ══════════ HOME ══════════ -->
-<div id="page-home" class="page active">
-  <nav class="topnav">
-    <span class="nav-logo">YS</span>
-    <div class="nav-links">
-      <span class="nav-tag">AI · ML · Builder</span>
-      <a href="mailto:yaminis2819@gmail.com" class="nav-cta">Get in touch</a>
-    </div>
-  </nav>
+  --coral:    #e8845a;
+  --gold:     #d4a84b;
+  --sage:     #7dbc8c;
+  --blue:     #5a8ee8;
+  --plum:     #a47fd0;
+  --rose:     #e85a7a;
 
-  <div class="home-grid">
-    <div class="home-text">
-      <div class="home-badge"><span class="badge-dot"></span>Open to internships & collaborations</div>
-      <h1 class="home-h1">
-        Hi, I'm<br>
-        <em>Yamini Soni</em>
-      </h1>
-      <p class="home-sub">AI &amp; Machine Learning engineer building systems that predict, understand, and create — from financial risk models to computer vision pipelines.</p>
-      <div class="home-links">
-        <a href="https://github.com/Yamini-Soni" target="_blank" class="link-pill"><i class="fab fa-github"></i>GitHub</a>
-        <a href="https://www.linkedin.com/in/yamini-soni28/" target="_blank" class="link-pill"><i class="fab fa-linkedin"></i>LinkedIn</a>
-        <a href="mailto:yaminis2819@gmail.com" class="link-pill"><i class="fas fa-envelope"></i>Email</a>
-      </div>
-      <div class="home-stats">
-        <div class="hstat"><strong>93.5%</strong><span>Best Model Accuracy</span></div>
-        <div class="hstat-sep"></div>
-        <div class="hstat"><strong>0.97</strong><span>ROC-AUC Score</span></div>
-        <div class="hstat-sep"></div>
-        <div class="hstat"><strong>8.71</strong><span>CGPA @ LPU</span></div>
-      </div>
-    </div>
-    <div class="home-visual">
-      <div class="photo-frame">
-        <img src="images/profile.jpeg" alt="Yamini Soni" class="profile-photo">
-        <div class="photo-accent-1"></div>
-        <div class="photo-accent-2"></div>
-      </div>
-    </div>
-  </div>
+  --shadow-sm: 0 2px 8px rgba(26,23,20,0.06);
+  --shadow-md: 0 6px 24px rgba(26,23,20,0.1);
+  --shadow-lg: 0 16px 48px rgba(26,23,20,0.14);
 
-  <button class="bot-entry-btn" onclick="goToBot()">
-    <div class="entry-bot-eyes">
-      <div class="entry-eye"></div><div class="entry-eye"></div>
-    </div>
-    <span>Chat with my AI assistant</span>
-    <i class="fas fa-arrow-right"></i>
-  </button>
-</div>
+  --radius: 16px;
+  --radius-sm: 10px;
+}
 
-<!-- ══════════ BOT HUB ══════════ -->
-<div id="page-bot" class="page">
-  <button class="pill-back" onclick="goHome()"><i class="fas fa-arrow-left"></i> Home</button>
+/* ══════════ RESET ══════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
 
-  <div class="hub-layout">
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
 
-    <!-- Left: Bot -->
-    <div class="bot-column">
-      <div class="bot-card" id="botCard">
-        <div class="bot-face-area">
-          <div class="bot-head-wrap">
-            <div class="bot-face" id="botFace">
-              <div class="bot-brow left-brow" id="browL"></div>
-              <div class="bot-brow right-brow" id="browR"></div>
-              <div class="bot-eye-wrap" id="eyeLeft">
-                <div class="bot-pupil" id="pupilLeft"></div>
-                <div class="bot-gleam"></div>
-              </div>
-              <div class="bot-eye-wrap" id="eyeRight">
-                <div class="bot-pupil" id="pupilRight"></div>
-                <div class="bot-gleam"></div>
-              </div>
-              <div class="bot-nose"></div>
-              <div class="bot-mouth-wrap" id="botMouth">
-                <div class="bot-lip-top"></div>
-                <div class="bot-lip-bot" id="lipBot"></div>
-              </div>
-            </div>
-            <div class="bot-ear left-ear"></div>
-            <div class="bot-ear right-ear"></div>
-          </div>
-        </div>
-        <div class="bot-name-tag">Yami<span class="bot-dot">•</span></div>
-      </div>
+/* ══════════ CANVAS BG ══════════ */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
 
-      <div class="bot-bubble" id="botBubble">
-        <p id="botText">Hi! I'm Yami, Yamini's assistant. Ask me anything — or pick a topic from the menu!</p>
-        <div class="bubble-tail"></div>
-      </div>
+/* ══════════ CURSOR ══════════ */
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+.cursor-dot {
+  width: 5px; height: 5px;
+  background: var(--coral);
+}
+.cursor-ring {
+  width: 28px; height: 28px;
+  border: 1.5px solid rgba(232,132,90,0.45);
+  transition: width 0.2s, height 0.2s, border-color 0.2s;
+}
+.cursor-ring.grow { width: 44px; height: 44px; border-color: var(--coral); }
 
-      <div class="voice-row">
-        <button class="mic-pill" id="micBtn" onclick="toggleListening()">
-          <i class="fas fa-microphone" id="micIcon"></i>
-          <span id="micLabel">Speak to me</span>
-        </button>
-      </div>
-    </div>
+/* ══════════ PAGES ══════════ */
+.page {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 1;
+  overflow-y: auto;
+}
+.page.active {
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-    <!-- Right: Orbit menu -->
-    <div class="menu-column">
-      <p class="menu-label">What do you want to explore?</p>
-      <div class="topic-grid">
-        <button class="topic-btn" onclick="navigateTo('skills')">
-          <div class="topic-icon" style="--ic:#e8845a"><i class="fas fa-code"></i></div>
-          <div class="topic-text"><strong>Skills</strong><span>Languages & frameworks</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-        <button class="topic-btn" onclick="navigateTo('projects')">
-          <div class="topic-icon" style="--ic:#5a8ee8"><i class="fas fa-rocket"></i></div>
-          <div class="topic-text"><strong>Projects</strong><span>3 AI/ML builds</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-        <button class="topic-btn" onclick="navigateTo('experience')">
-          <div class="topic-icon" style="--ic:#7dbc8c"><i class="fas fa-laptop-code"></i></div>
-          <div class="topic-text"><strong>Training</strong><span>Industry programs</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-        <button class="topic-btn" onclick="navigateTo('achievements')">
-          <div class="topic-icon" style="--ic:#d4a84b"><i class="fas fa-trophy"></i></div>
-          <div class="topic-text"><strong>Achievements</strong><span>Awards & recognition</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-        <button class="topic-btn" onclick="navigateTo('education')">
-          <div class="topic-icon" style="--ic:#a47fd0"><i class="fas fa-graduation-cap"></i></div>
-          <div class="topic-text"><strong>Education</strong><span>B.Tech CSE @ LPU</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-        <button class="topic-btn" onclick="navigateTo('certificates')">
-          <div class="topic-icon" style="--ic:#e85a7a"><i class="fas fa-certificate"></i></div>
-          <div class="topic-text"><strong>Certificates</strong><span>Google, ITMO & more</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-        <button class="topic-btn" onclick="navigateTo('resume')">
-          <div class="topic-icon" style="--ic:#5ab8e8"><i class="fas fa-file-alt"></i></div>
-          <div class="topic-text"><strong>Resume</strong><span>View full CV</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-        <button class="topic-btn" onclick="navigateTo('contact')">
-          <div class="topic-icon" style="--ic:#e8845a"><i class="fas fa-paper-plane"></i></div>
-          <div class="topic-text"><strong>Contact</strong><span>Let's work together</span></div>
-          <i class="fas fa-chevron-right topic-arrow"></i>
-        </button>
-      </div>
-    </div>
+/* ══════════ HOME ══════════ */
+#page-home {
+  background: var(--bg);
+  padding: 0;
+  overflow: hidden;
+}
 
-  </div>
-</div>
+.topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 60px;
+  position: relative;
+  z-index: 2;
+}
 
-<!-- ══════════ SKILLS ══════════ -->
-<div id="page-skills" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Skills</h2>
-  </div>
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--coral);
+  letter-spacing: 0.02em;
+}
 
-  <div class="skills-master-grid">
-    <div class="skill-block">
-      <div class="skill-block-header" style="--bc:#e8845a">
-        <i class="fas fa-terminal"></i>
-        <h3>Languages</h3>
-      </div>
-      <div class="skill-rows">
-        <div class="skill-row"><span class="sk-name">Python</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:90%;--c:#e8845a"></div></div><span class="sk-pct">90%</span></div>
-        <div class="skill-row"><span class="sk-name">C++</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:80%;--c:#e8845a"></div></div><span class="sk-pct">80%</span></div>
-        <div class="skill-row"><span class="sk-name">Java</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:75%;--c:#e8845a"></div></div><span class="sk-pct">75%</span></div>
-        <div class="skill-row"><span class="sk-name">C</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:70%;--c:#e8845a"></div></div><span class="sk-pct">70%</span></div>
-      </div>
-    </div>
+.nav-links { display: flex; align-items: center; gap: 20px; }
 
-    <div class="skill-block">
-      <div class="skill-block-header" style="--bc:#5a8ee8">
-        <i class="fas fa-brain"></i>
-        <h3>ML / AI</h3>
-      </div>
-      <div class="skill-rows">
-        <div class="skill-row"><span class="sk-name">Scikit-Learn</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:88%;--c:#5a8ee8"></div></div><span class="sk-pct">88%</span></div>
-        <div class="skill-row"><span class="sk-name">NumPy / Pandas</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:92%;--c:#5a8ee8"></div></div><span class="sk-pct">92%</span></div>
-        <div class="skill-row"><span class="sk-name">XGBoost / LightGBM</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:85%;--c:#5a8ee8"></div></div><span class="sk-pct">85%</span></div>
-        <div class="skill-row"><span class="sk-name">OpenCV / dlib</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:78%;--c:#5a8ee8"></div></div><span class="sk-pct">78%</span></div>
-        <div class="skill-row"><span class="sk-name">NLP / Transformers</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:75%;--c:#5a8ee8"></div></div><span class="sk-pct">75%</span></div>
-      </div>
-    </div>
+.nav-tag {
+  font-size: 0.8rem;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
 
-    <div class="skill-block">
-      <div class="skill-block-header" style="--bc:#7dbc8c">
-        <i class="fas fa-tools"></i>
-        <h3>Tools & Web</h3>
-      </div>
-      <div class="skill-rows">
-        <div class="skill-row"><span class="sk-name">GitHub</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:85%;--c:#7dbc8c"></div></div><span class="sk-pct">85%</span></div>
-        <div class="skill-row"><span class="sk-name">Streamlit</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:80%;--c:#7dbc8c"></div></div><span class="sk-pct">80%</span></div>
-        <div class="skill-row"><span class="sk-name">Jupyter Notebook</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:90%;--c:#7dbc8c"></div></div><span class="sk-pct">90%</span></div>
-        <div class="skill-row"><span class="sk-name">HTML &amp; CSS</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:78%;--c:#7dbc8c"></div></div><span class="sk-pct">78%</span></div>
-        <div class="skill-row"><span class="sk-name">VS Code</span><div class="sk-bar-wrap"><div class="sk-bar" style="--p:90%;--c:#7dbc8c"></div></div><span class="sk-pct">90%</span></div>
-      </div>
-    </div>
+.nav-cta {
+  padding: 9px 22px;
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.nav-cta:hover { background: var(--coral); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,132,90,0.3); }
 
-    <div class="skill-block">
-      <div class="skill-block-header" style="--bc:#a47fd0">
-        <i class="fas fa-users"></i>
-        <h3>Soft Skills</h3>
-      </div>
-      <div class="soft-chips">
-        <span class="soft-chip">Problem Solving</span>
-        <span class="soft-chip">Analytical Thinking</span>
-        <span class="soft-chip">Team Collaboration</span>
-        <span class="soft-chip">Adaptability</span>
-        <span class="soft-chip">Research Mindset</span>
-        <span class="soft-chip">Attention to Detail</span>
-      </div>
-    </div>
-  </div>
+/* Home grid */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  align-items: center;
+  gap: 60px;
+  padding: 20px 60px 20px;
+  flex: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
 
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>Yamini is strongest in Python and ML pipelines. What else would you like to know?</p>
-  </div>
-</div>
+.home-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  background: rgba(125,188,140,0.12);
+  border: 1px solid rgba(125,188,140,0.3);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  color: #4a9a5c;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.badge-dot {
+  width: 7px; height: 7px;
+  background: #7dbc8c;
+  border-radius: 50%;
+  animation: breathe 2s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.7); opacity: 0.6; }
+}
 
-<!-- ══════════ PROJECTS ══════════ -->
-<div id="page-projects" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Projects</h2>
-  </div>
+.home-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  font-weight: 900;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+.home-h1 em {
+  font-style: italic;
+  color: var(--coral);
+}
 
-  <div class="projects-grid">
+.home-sub {
+  font-size: 1.05rem;
+  color: var(--ink2);
+  max-width: 520px;
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
 
-    <div class="proj-card" onclick="openProject('loan')">
-      <div class="proj-band" style="background:linear-gradient(135deg,#e8845a,#e85a7a)"></div>
-      <div class="proj-body">
-        <div class="proj-top">
-          <div class="proj-icon" style="background:linear-gradient(135deg,#e8845a,#e85a7a)"><i class="fas fa-chart-line"></i></div>
-          <a href="https://github.com/Yamini-Soni" target="_blank" class="proj-gh" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
-        </div>
-        <h3>Loan Default Risk Analyzer</h3>
-        <p>ML pipeline predicting loan default risk using financial &amp; behavioral data — 93.5% accuracy, ROC-AUC 0.97.</p>
-        <div class="proj-chips">
-          <span>Python</span><span>XGBoost</span><span>LightGBM</span><span>Random Forest</span>
-        </div>
-        <div class="proj-footer">
-          <span class="proj-date">Dec 2025</span>
-          <span class="proj-more">Details <i class="fas fa-arrow-right"></i></span>
-        </div>
-      </div>
-    </div>
+.home-links { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
 
-    <div class="proj-card" onclick="openProject('gold')">
-      <div class="proj-band" style="background:linear-gradient(135deg,#d4a84b,#e8845a)"></div>
-      <div class="proj-body">
-        <div class="proj-top">
-          <div class="proj-icon" style="background:linear-gradient(135deg,#d4a84b,#e8845a)"><i class="fas fa-coins"></i></div>
-          <a href="https://github.com/Yamini-Soni" target="_blank" class="proj-gh" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
-        </div>
-        <h3>AI Gold Price Predictor</h3>
-        <p>Multi-country gold analytics with NLP sentiment scoring from real-time financial news via APIs.</p>
-        <div class="proj-chips">
-          <span>Python</span><span>NLP</span><span>Streamlit</span><span>APIs</span>
-        </div>
-        <div class="proj-footer">
-          <span class="proj-date">Jul 2025</span>
-          <span class="proj-more">Details <i class="fas fa-arrow-right"></i></span>
-        </div>
-      </div>
-    </div>
+.link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border: 1.5px solid var(--border2);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink2);
+  text-decoration: none;
+  background: var(--surface);
+  transition: all 0.25s;
+}
+.link-pill:hover { border-color: var(--coral); color: var(--coral); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
 
-    <div class="proj-card" onclick="openProject('face')">
-      <div class="proj-band" style="background:linear-gradient(135deg,#5a8ee8,#7dbc8c)"></div>
-      <div class="proj-body">
-        <div class="proj-top">
-          <div class="proj-icon" style="background:linear-gradient(135deg,#5a8ee8,#7dbc8c)"><i class="fas fa-user-circle"></i></div>
-          <a href="https://github.com/Yamini-Soni" target="_blank" class="proj-gh" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
-        </div>
-        <h3>Face Recognition Attendance</h3>
-        <p>Deep learning attendance system using dlib ResNet 128-D face encodings with real-time webcam tracking.</p>
-        <div class="proj-chips">
-          <span>Python</span><span>OpenCV</span><span>dlib</span><span>Deep Learning</span>
-        </div>
-        <div class="proj-footer">
-          <span class="proj-date">Apr 2025</span>
-          <span class="proj-more">Details <i class="fas fa-arrow-right"></i></span>
-        </div>
-      </div>
-    </div>
+.home-stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.hstat { display: flex; flex-direction: column; padding: 0 28px 0 0; }
+.hstat strong { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.hstat span { font-size: 0.75rem; color: var(--ink3); margin-top: 3px; font-weight: 500; }
+.hstat-sep { width: 1px; height: 36px; background: var(--border2); margin-right: 28px; }
 
-    <div class="proj-card" onclick="openProject('os')">
-      <div class="proj-band" style="background:linear-gradient(135deg,#a47fd0,#5a8ee8)"></div>
-      <div class="proj-body">
-        <div class="proj-top">
-          <div class="proj-icon" style="background:linear-gradient(135deg,#a47fd0,#5a8ee8)"><i class="fas fa-microchip"></i></div>
-          <a href="https://github.com/Yamini-Soni" target="_blank" class="proj-gh" onclick="event.stopPropagation()"><i class="fab fa-github"></i></a>
-        </div>
-        <h3>OS Process Visualization Tool</h3>
-        <p>Interactive dashboard for CPU scheduling algorithms with animated Gantt charts and process comparison.</p>
-        <div class="proj-chips">
-          <span>Python</span><span>Visualization</span><span>OS Concepts</span>
-        </div>
-        <div class="proj-footer">
-          <span class="proj-date">2024</span>
-          <span class="proj-more">Details <i class="fas fa-arrow-right"></i></span>
-        </div>
-      </div>
-    </div>
+/* Profile photo */
+.home-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  </div>
+.photo-frame {
+  position: relative;
+  width: 340px;
+  height: 380px;
+}
 
-  <!-- Project Modal -->
-  <div class="proj-modal-overlay" id="projModal">
-    <div class="proj-modal-card">
-      <button class="modal-x" onclick="closeProject()"><i class="fas fa-times"></i></button>
-      <div id="modalBody"></div>
-    </div>
-  </div>
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+  position: relative;
+  z-index: 2;
+  box-shadow: var(--shadow-lg);
+}
 
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>Click any project card to see the full breakdown. What would you like to explore next?</p>
-  </div>
-</div>
+.photo-accent-1 {
+  position: absolute;
+  width: 100%; height: 100%;
+  top: 12px; left: 12px;
+  border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+  background: linear-gradient(135deg, rgba(232,132,90,0.25), rgba(212,168,75,0.2));
+  z-index: 1;
+}
+.photo-accent-2 {
+  position: absolute;
+  width: 90px; height: 90px;
+  bottom: -20px; right: -20px;
+  background: rgba(125,188,140,0.2);
+  border-radius: 50%;
+  z-index: 0;
+}
 
-<!-- ══════════ EXPERIENCE ══════════ -->
-<div id="page-experience" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Training</h2>
-  </div>
+/* Bot entry button */
+.bot-entry-btn {
+  position: fixed;
+  bottom: 36px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s;
+  z-index: 100;
+}
+.bot-entry-btn:hover { border-color: var(--coral); color: var(--coral); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
 
-  <div class="exp-layout">
-    <div class="exp-card featured">
-      <div class="exp-left-bar" style="background:linear-gradient(to bottom,#e8845a,#e85a7a)"></div>
-      <div class="exp-content">
-        <div class="exp-meta">
-          <span class="exp-badge">Training Program</span>
-          <span class="exp-date">Jun – Jul 2025</span>
-        </div>
-        <h3>AI-Powered NLP using Python</h3>
-        <p class="exp-org"><i class="fas fa-building"></i> AlgoTutor Academy</p>
-        <ul class="exp-points">
-          <li>Hands-on with Generative AI, Transformer architectures, and large language models</li>
-          <li>Built an AI-Powered Gold Price Analyzer — integrated Yahoo Finance &amp; Exchange Rate APIs</li>
-          <li>Designed interactive Streamlit dashboard with multi-market analysis (India, USA, Dubai)</li>
-          <li>Worked on chatbot development, sentiment analysis, and text classification pipelines</li>
-          <li>Explored NLP workflows including tokenization, embeddings, and fine-tuning</li>
-        </ul>
-        <div class="exp-tags">
-          <span>GenAI</span><span>Transformers</span><span>LLMs</span><span>NLP</span><span>Streamlit</span><span>Python</span>
-        </div>
-      </div>
-    </div>
-  </div>
+.entry-bot-eyes {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--coral), var(--gold));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.entry-eye {
+  width: 7px; height: 7px;
+  background: white;
+  border-radius: 50%;
+  animation: blink 4s infinite;
+}
+@keyframes blink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  92% { transform: scaleY(0.1); }
+}
 
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>Yamini trained on cutting-edge GenAI and NLP at AlgoTutor. What else can I show you?</p>
-  </div>
-</div>
+/* ══════════ BOT HUB ══════════ */
+#page-bot {
+  background: var(--bg);
+  align-items: center;
+  justify-content: center;
+  padding: 60px 60px;
+}
 
-<!-- ══════════ ACHIEVEMENTS ══════════ -->
-<div id="page-achievements" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Achievements</h2>
-  </div>
+.hub-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 60px;
+  max-width: 1000px;
+  width: 100%;
+  align-items: start;
+}
 
-  <div class="ach-grid">
-    <div class="ach-card highlight-card">
-      <div class="ach-top">
-        <div class="ach-icon-wrap" style="--ai:#4285f4"><i class="fab fa-google"></i></div>
-        <div class="ach-award-badge">₹9,540 Award</div>
-      </div>
-      <h3>Google Adversarial Nibbler Project</h3>
-      <p class="ach-org">Google · January 2025</p>
-      <p class="ach-desc">Contributed to Google's global AI safety initiative focused on evaluating and improving safety in image-generation systems. Recognized with a monetary award for meaningful contributions to responsible AI research.</p>
-      <div class="ach-tags"><span>AI Safety</span><span>Image Generation</span><span>Research</span></div>
-    </div>
+/* Bot card */
+.bot-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
 
-    <div class="ach-card">
-      <div class="ach-top">
-        <div class="ach-icon-wrap" style="--ai:#7dbc8c"><i class="fas fa-graduation-cap"></i></div>
-      </div>
-      <h3>Academic Excellence — CGPA 8.71</h3>
-      <p class="ach-org">LPU, B.Tech CSE · 2023–Present</p>
-      <p class="ach-desc">Maintaining strong academic performance in Computer Science while building real-world AI/ML projects and participating in industry programs simultaneously.</p>
-    </div>
+.bot-card {
+  width: 160px;
+  height: 180px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 50% 50% 40% 40%;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: bobble 4s ease-in-out infinite;
+}
+@keyframes bobble {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
 
-    <div class="ach-card">
-      <div class="ach-top">
-        <div class="ach-icon-wrap" style="--ai:#a47fd0"><i class="fas fa-globe"></i></div>
-      </div>
-      <h3>DU Lab Summer School — ITMO Russia</h3>
-      <p class="ach-org">ITMO University, Russia · August 2025</p>
-      <p class="ach-desc">Selected for an international summer school program at one of Russia's top technical universities, gaining exposure to global research and academic collaboration.</p>
-    </div>
-  </div>
+.bot-face {
+  position: relative;
+  width: 120px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>Yamini was recognized by Google for AI safety work. Impressive, right? Ask me anything!</p>
-  </div>
-</div>
+.bot-ear {
+  position: absolute;
+  top: 50px;
+  width: 18px; height: 28px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+}
+.left-ear { left: -10px; }
+.right-ear { right: -10px; }
 
-<!-- ══════════ EDUCATION ══════════ -->
-<div id="page-education" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Education</h2>
-  </div>
+.bot-brow {
+  position: absolute;
+  top: 14px;
+  width: 24px; height: 3px;
+  background: var(--ink2);
+  border-radius: 2px;
+  transition: transform 0.3s;
+}
+.left-brow { left: 18px; }
+.right-brow { right: 18px; }
 
-  <div class="edu-list">
-    <div class="edu-row">
-      <div class="edu-year-col">
-        <span class="edu-year">2023</span>
-        <span class="edu-year-end">Present</span>
-        <div class="edu-line"></div>
-      </div>
-      <div class="edu-card-new">
-        <div class="edu-header">
-          <div class="edu-icon-new" style="--ei:#e8845a"><i class="fas fa-university"></i></div>
-          <div>
-            <h3>B.Tech — Computer Science &amp; Engineering</h3>
-            <p class="edu-inst">Lovely Professional University, Phagwara, Punjab</p>
-          </div>
-          <div class="edu-score-badge">CGPA 8.71</div>
-        </div>
-        <p class="edu-desc">Specializing in Artificial Intelligence and Machine Learning. Coursework includes Data Structures, Algorithms, Operating Systems, DBMS, and Machine Learning.</p>
-        <div class="edu-subjects">
-          <span>AI / ML</span><span>Deep Learning</span><span>Data Structures</span><span>Operating Systems</span><span>DBMS</span>
-        </div>
-      </div>
-    </div>
+.bot-eye-wrap {
+  position: absolute;
+  top: 24px;
+  width: 30px; height: 30px;
+  background: var(--bg);
+  border: 2px solid var(--border2);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+}
+#eyeLeft { left: 14px; }
+#eyeRight { right: 14px; }
 
-    <div class="edu-row">
-      <div class="edu-year-col">
-        <span class="edu-year">2021</span>
-        <span class="edu-year-end">2022</span>
-        <div class="edu-line"></div>
-      </div>
-      <div class="edu-card-new">
-        <div class="edu-header">
-          <div class="edu-icon-new" style="--ei:#5a8ee8"><i class="fas fa-school"></i></div>
-          <div>
-            <h3>Intermediate — PCM</h3>
-            <p class="edu-inst">Om Shree Sant Academy School, Pipar City, Rajasthan</p>
-          </div>
-          <div class="edu-score-badge" style="background:rgba(90,142,232,0.1);color:#5a8ee8;border-color:rgba(90,142,232,0.2)">95.6%</div>
-        </div>
-        <div class="edu-subjects"><span>Physics</span><span>Chemistry</span><span>Mathematics</span></div>
-      </div>
-    </div>
+.bot-pupil {
+  width: 14px; height: 14px;
+  background: radial-gradient(circle at 35% 35%, #5a4a3a, #2a1a0a);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s linear;
+}
 
-    <div class="edu-row">
-      <div class="edu-year-col">
-        <span class="edu-year">2019</span>
-        <span class="edu-year-end">2020</span>
-      </div>
-      <div class="edu-card-new">
-        <div class="edu-header">
-          <div class="edu-icon-new" style="--ei:#7dbc8c"><i class="fas fa-book-open"></i></div>
-          <div>
-            <h3>Matriculation</h3>
-            <p class="edu-inst">Om Shree Sant Academy School, Pipar City, Rajasthan</p>
-          </div>
-          <div class="edu-score-badge" style="background:rgba(125,188,140,0.1);color:#7dbc8c;border-color:rgba(125,188,140,0.2)">95%</div>
-        </div>
-      </div>
-    </div>
-  </div>
+.bot-gleam {
+  width: 6px; height: 6px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  position: absolute;
+  top: 4px; right: 4px;
+}
 
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>Yamini is currently in her 2nd year at LPU. Want to see her projects or skills?</p>
-  </div>
-</div>
+.bot-nose {
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 5px;
+  background: var(--border2);
+  border-radius: 50% 50% 40% 40%;
+}
 
-<!-- ══════════ CERTIFICATES ══════════ -->
-<div id="page-certificates" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Certificates</h2>
-  </div>
+.bot-mouth-wrap {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px; height: 16px;
+  overflow: hidden;
+}
 
-  <div class="certs-layout">
-    <div class="cert-card-new">
-      <div class="cert-header-band" style="background:linear-gradient(135deg,#4285f4,#34a853)"></div>
-      <div class="cert-body">
-        <div class="cert-logo" style="background:linear-gradient(135deg,#4285f4,#34a853)"><i class="fab fa-google"></i></div>
-        <div class="cert-info">
-          <h3>Adversarial Nibbler Project</h3>
-          <p class="cert-issuer">Google</p>
-          <p class="cert-when">January 2025</p>
-          <p class="cert-about">Recognized for contributions to AI safety and image-generation model evaluation.</p>
-        </div>
-        <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-      </div>
-    </div>
+.bot-lip-top {
+  width: 44px; height: 8px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border2);
+  border-radius: 0 0 8px 8px;
+  border-top: none;
+}
 
-    <div class="cert-card-new">
-      <div class="cert-header-band" style="background:linear-gradient(135deg,#003f87,#1565c0)"></div>
-      <div class="cert-body">
-        <div class="cert-logo" style="background:linear-gradient(135deg,#003f87,#1565c0)"><i class="fas fa-globe-europe"></i></div>
-        <div class="cert-info">
-          <h3>DU Lab Summer School</h3>
-          <p class="cert-issuer">ITMO University, Russia</p>
-          <p class="cert-when">August 2025</p>
-          <p class="cert-about">International program covering advanced topics in AI and computational research.</p>
-        </div>
-        <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-      </div>
-    </div>
+.bot-lip-bot {
+  width: 44px; height: 0;
+  background: linear-gradient(135deg, var(--coral), var(--gold));
+  border-radius: 0 0 8px 8px;
+  transition: height 0.15s ease;
+  margin-top: 1px;
+}
 
-    <div class="cert-card-new">
-      <div class="cert-header-band" style="background:linear-gradient(135deg,#e8845a,#d4a84b)"></div>
-      <div class="cert-body">
-        <div class="cert-logo" style="background:linear-gradient(135deg,#e8845a,#d4a84b)"><i class="fas fa-robot"></i></div>
-        <div class="cert-info">
-          <h3>AI-Powered NLP using Python</h3>
-          <p class="cert-issuer">AlgoTutor Academy</p>
-          <p class="cert-when">July 2025</p>
-          <p class="cert-about">Completed a hands-on training program in Generative AI, LLMs, and NLP pipelines.</p>
-        </div>
-        <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-      </div>
-    </div>
-  </div>
+.bot-mouth-wrap.speaking .bot-lip-bot {
+  animation: speak 0.2s ease-in-out infinite alternate;
+}
+@keyframes speak {
+  from { height: 2px; }
+  to { height: 10px; }
+}
 
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>All certificates are verified! Want to see Yamini's achievements or contact her?</p>
-  </div>
-</div>
+.bot-name-tag {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--coral);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 4px 14px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.bot-dot { margin: 0 2px; }
 
-<!-- ══════════ RESUME ══════════ -->
-<div id="page-resume" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Resume</h2>
-  </div>
-  <div class="resume-viewer-wrap">
-    <div class="resume-embed-card">
-      <div class="resume-toolbar">
-        <span><i class="fas fa-file-alt"></i> Yamini_Soni_CV.pdf</span>
-        <div class="resume-toolbar-right">
-          <span class="resume-chip"><i class="fas fa-eye"></i> View only</span>
-        </div>
-      </div>
-      <div class="resume-pdf-area">
-        <!-- Replace with actual embedded PDF if available -->
-        <div class="resume-placeholder">
-          <i class="fas fa-file-alt resume-pdf-icon"></i>
-          <h3>Yamini Soni — CV 2025</h3>
-          <p>To embed your CV here, host the PDF file alongside this project and it will display inline.</p>
-          <div class="resume-summary-grid">
-            <div class="rs-item"><i class="fas fa-graduation-cap"></i><span>B.Tech CSE · LPU · CGPA 8.71</span></div>
-            <div class="rs-item"><i class="fas fa-code"></i><span>Python · ML · Deep Learning · NLP</span></div>
-            <div class="rs-item"><i class="fas fa-trophy"></i><span>Google AI Safety Award · ₹9,540</span></div>
-            <div class="rs-item"><i class="fas fa-rocket"></i><span>3+ Live AI/ML Projects</span></div>
-            <div class="rs-item"><i class="fas fa-certificate"></i><span>Google · ITMO · AlgoTutor Certified</span></div>
-            <div class="rs-item"><i class="fas fa-map-marker-alt"></i><span>Punjab, India · Open to remote</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>Here's Yamini's full resume overview. Want to know about her specific skills or projects?</p>
-  </div>
-</div>
+/* Bubble */
+.bot-bubble {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 16px 16px 16px 4px;
+  padding: 16px 18px;
+  max-width: 280px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.bubble-tail {
+  position: absolute;
+  bottom: -10px;
+  left: 18px;
+  width: 18px; height: 10px;
+  background: var(--surface);
+  clip-path: polygon(0 0, 18px 0, 9px 10px);
+  border-left: 1.5px solid var(--border);
+}
+#botText {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ink2);
+  min-height: 38px;
+}
 
-<!-- ══════════ CONTACT ══════════ -->
-<div id="page-contact" class="page section-page">
-  <div class="spage-nav">
-    <button class="pill-back" onclick="backToBot()"><i class="fas fa-robot"></i> Back</button>
-    <h2 class="spage-title">Contact</h2>
-  </div>
+/* Voice row */
+.voice-row { display: flex; align-items: center; justify-content: center; }
+.mic-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 22px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(26,23,20,0.2);
+}
+.mic-pill:hover { background: var(--coral); box-shadow: 0 6px 20px rgba(232,132,90,0.35); }
+.mic-pill.on { background: var(--rose); animation: micRing 1s ease-in-out infinite; }
+@keyframes micRing {
+  0%, 100% { box-shadow: 0 4px 16px rgba(232,90,122,0.4); }
+  50% { box-shadow: 0 4px 32px rgba(232,90,122,0.7), 0 0 0 8px rgba(232,90,122,0.1); }
+}
 
-  <div class="contact-grid">
-    <div class="contact-left-col">
-      <h3 class="contact-heading">Let's build something together.</h3>
-      <p class="contact-para">I'm actively seeking internships and collaborations in AI/ML, computer vision, and NLP. If you have an interesting project or opportunity, I'd love to hear from you.</p>
+/* Topic grid */
+.menu-column { display: flex; flex-direction: column; gap: 16px; }
+.menu-label { font-size: 0.78rem; color: var(--ink3); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
 
-      <div class="avail-pills">
-        <span class="avail-pill on"><i class="fas fa-circle"></i> Internships</span>
-        <span class="avail-pill on"><i class="fas fa-circle"></i> Collaborations</span>
-        <span class="avail-pill on"><i class="fas fa-circle"></i> Research Projects</span>
-        <span class="avail-pill on"><i class="fas fa-circle"></i> Freelance ML</span>
-      </div>
+.topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-      <div class="contact-items-list">
-        <a href="mailto:yaminis2819@gmail.com" class="ci-row">
-          <div class="ci-ico" style="--c:#e8845a"><i class="fas fa-envelope"></i></div>
-          <div class="ci-detail"><strong>Email</strong><span>yaminis2819@gmail.com</span></div>
-          <i class="fas fa-external-link-alt ci-ext"></i>
-        </a>
-        <a href="tel:+917986929374" class="ci-row">
-          <div class="ci-ico" style="--c:#7dbc8c"><i class="fas fa-phone-alt"></i></div>
-          <div class="ci-detail"><strong>Phone</strong><span>+91 79869 29374</span></div>
-          <i class="fas fa-external-link-alt ci-ext"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/yamini-soni28/" target="_blank" class="ci-row">
-          <div class="ci-ico" style="--c:#0a66c2"><i class="fab fa-linkedin"></i></div>
-          <div class="ci-detail"><strong>LinkedIn</strong><span>yamini-soni28</span></div>
-          <i class="fas fa-external-link-alt ci-ext"></i>
-        </a>
-        <a href="https://github.com/Yamini-Soni" target="_blank" class="ci-row">
-          <div class="ci-ico" style="--c:#333"><i class="fab fa-github"></i></div>
-          <div class="ci-detail"><strong>GitHub</strong><span>Yamini-Soni</span></div>
-          <i class="fas fa-external-link-alt ci-ext"></i>
-        </a>
-      </div>
-    </div>
+.topic-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-shadow: var(--shadow-sm);
+}
+.topic-btn:hover {
+  border-color: var(--coral);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.topic-btn:hover .topic-icon { filter: brightness(1.1); }
 
-    <div class="contact-right-col">
-      <div class="meeting-card">
-        <div class="meeting-top">
-          <i class="fas fa-calendar-check meeting-cal-icon"></i>
-          <div>
-            <h4>Schedule a Meeting</h4>
-            <p>30-min intro call · Google Meet</p>
-          </div>
-        </div>
-        <div class="time-slots">
-          <div class="slot"><i class="fas fa-sun"></i> Weekdays 10AM–6PM IST</div>
-          <div class="slot"><i class="fas fa-moon"></i> Weekends flexible</div>
-        </div>
-        <a href="mailto:yaminis2819@gmail.com?subject=Meeting%20Request%20—%20Portfolio&body=Hi%20Yamini%2C%0A%0AI'd%20love%20to%20schedule%20a%20meeting%20to%20discuss..." class="send-meeting-btn">
-          <i class="fas fa-paper-plane"></i> Request a Meeting
-        </a>
-      </div>
+.topic-icon {
+  width: 38px; height: 38px;
+  background: rgba(var(--ic), 0.12);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ic);
+  font-size: 1rem;
+  flex-shrink: 0;
+  color: var(--ic);
+}
+/* Use direct color since CSS vars can't be used in hex inline easily */
+.topic-icon { background: color-mix(in srgb, var(--ic) 14%, transparent); color: var(--ic); }
 
-      <div class="resp-note">
-        <i class="fas fa-bolt"></i>
-        <span>Usually responds within 24 hours</span>
-      </div>
-    </div>
-  </div>
+.topic-text { flex: 1; }
+.topic-text strong { display: block; font-size: 0.9rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.topic-text span { font-size: 0.75rem; color: var(--ink3); }
 
-  <div class="mini-bot-bar">
-    <div class="mbot-face"><div class="mb-eye"></div><div class="mb-eye"></div></div>
-    <p>Yamini is actively seeking internships and collaborations. Go ahead and reach out!</p>
-  </div>
-</div>
+.topic-arrow { color: var(--ink3); font-size: 0.7rem; opacity: 0; transform: translateX(-4px); transition: all 0.2s; }
+.topic-btn:hover .topic-arrow { opacity: 1; transform: translateX(0); color: var(--coral); }
 
-<script src="script.js"></script>
-</body>
-</html>
+/* ══════════ SECTION PAGES COMMON ══════════ */
+.section-page {
+  background: var(--bg);
+  padding: 36px 60px 80px;
+  overflow-y: auto;
+}
+
+.spage-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 36px;
+}
+
+.pill-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink2);
+  transition: all 0.25s;
+  box-shadow: var(--shadow-sm);
+}
+.pill-back:hover { border-color: var(--coral); color: var(--coral); }
+
+.spage-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Mini bot bar */
+.mini-bot-bar {
+  position: fixed;
+  bottom: 28px;
+  right: 32px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: 280px;
+  z-index: 100;
+}
+.mbot-face {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--coral), var(--gold));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(232,132,90,0.3);
+  animation: bobble 3s ease-in-out infinite;
+}
+.mb-eye {
+  width: 7px; height: 7px;
+  background: white;
+  border-radius: 50%;
+  animation: blink 4s infinite;
+}
+.mini-bot-bar p {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px 12px 4px 12px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  color: var(--ink3);
+  line-height: 1.5;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ══════════ SKILLS ══════════ */
+.skills-master-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 900px;
+}
+
+.skill-block {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  box-shadow: var(--shadow-sm);
+}
+
+.skill-block-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px solid var(--border);
+}
+.skill-block-header i {
+  width: 32px; height: 32px;
+  background: color-mix(in srgb, var(--bc) 12%, transparent);
+  color: var(--bc);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+.skill-block-header h3 { font-size: 1rem; font-weight: 700; color: var(--ink); }
+
+.skill-rows { display: flex; flex-direction: column; gap: 12px; }
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 36px;
+  align-items: center;
+  gap: 12px;
+}
+.sk-name { font-size: 0.85rem; color: var(--ink2); font-weight: 500; }
+.sk-bar-wrap {
+  height: 6px;
+  background: var(--bg2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.sk-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--c), color-mix(in srgb, var(--c) 60%, transparent));
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sk-pct { font-size: 0.75rem; color: var(--ink3); font-weight: 600; text-align: right; }
+
+.soft-chips { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; }
+.soft-chip {
+  padding: 6px 14px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  color: var(--ink2);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.soft-chip:hover { border-color: var(--plum); color: var(--plum); background: rgba(164,127,208,0.08); }
+
+/* ══════════ PROJECTS ══════════ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 920px;
+}
+
+.proj-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: var(--shadow-sm);
+}
+.proj-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--border2); }
+
+.proj-band { height: 4px; }
+
+.proj-body { padding: 22px 24px 20px; }
+
+.proj-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.proj-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+}
+.proj-gh {
+  color: var(--ink3);
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.proj-gh:hover { color: var(--ink); }
+
+.proj-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.proj-card p { font-size: 0.85rem; color: var(--ink3); line-height: 1.6; margin-bottom: 14px; }
+
+.proj-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.proj-chips span {
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  background: var(--bg2);
+  border-radius: 100px;
+  color: var(--ink3);
+  font-weight: 600;
+}
+
+.proj-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.proj-date { font-size: 0.75rem; color: var(--ink3); }
+.proj-more { font-size: 0.8rem; font-weight: 600; color: var(--coral); display: flex; align-items: center; gap: 6px; }
+
+/* Project Modal */
+.proj-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,23,20,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.proj-modal-overlay.open { display: flex; animation: fadeUp 0.3s ease; }
+
+.proj-modal-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 620px;
+  width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+.modal-x {
+  position: absolute;
+  top: 18px; right: 18px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--ink3);
+  transition: all 0.2s;
+}
+.modal-x:hover { background: #ffe0e0; border-color: var(--rose); color: var(--rose); }
+
+.m-header { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 24px; }
+.m-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; flex-shrink: 0; }
+.m-header h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.m-header p { font-size: 0.82rem; color: var(--ink3); }
+
+.m-section { margin-bottom: 20px; }
+.m-section-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); font-weight: 700; margin-bottom: 8px; }
+.m-section p { font-size: 0.88rem; color: var(--ink2); line-height: 1.7; }
+.m-section ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.m-section ul li { font-size: 0.88rem; color: var(--ink2); padding-left: 18px; position: relative; line-height: 1.6; }
+.m-section ul li::before { content: '›'; position: absolute; left: 0; color: var(--coral); font-size: 1rem; line-height: 1.4; }
+
+.m-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.m-chips span { font-size: 0.78rem; padding: 5px 13px; background: var(--bg2); border: 1.5px solid var(--border); border-radius: 100px; color: var(--ink2); font-weight: 600; }
+
+.m-gh-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 8px;
+  padding: 11px 22px;
+  background: var(--ink);
+  color: white;
+  text-decoration: none;
+  border-radius: 100px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.m-gh-link:hover { background: var(--coral); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(232,132,90,0.3); }
+
+/* ══════════ EXPERIENCE ══════════ */
+.exp-layout { max-width: 780px; }
+
+.exp-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.exp-left-bar { width: 5px; flex-shrink: 0; }
+.exp-content { padding: 28px 30px; flex: 1; }
+
+.exp-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.exp-badge { font-size: 0.72rem; font-weight: 700; padding: 4px 12px; background: rgba(232,132,90,0.1); border: 1px solid rgba(232,132,90,0.25); color: var(--coral); border-radius: 100px; letter-spacing: 0.05em; text-transform: uppercase; }
+.exp-date { font-size: 0.78rem; color: var(--ink3); font-weight: 500; }
+
+.exp-content h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.exp-org { font-size: 0.85rem; color: var(--coral); font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 16px; }
+
+.exp-points { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.exp-points li { font-size: 0.88rem; color: var(--ink2); padding-left: 18px; position: relative; line-height: 1.65; }
+.exp-points li::before { content: '›'; position: absolute; left: 0; color: var(--coral); font-size: 1rem; }
+
+.exp-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.exp-tags span { font-size: 0.76rem; padding: 4px 12px; background: var(--bg2); border: 1.5px solid var(--border); border-radius: 100px; color: var(--ink3); font-weight: 600; }
+
+/* ══════════ ACHIEVEMENTS ══════════ */
+.ach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 960px; }
+
+.ach-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
+  position: relative;
+}
+.ach-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.highlight-card { border-color: rgba(232,132,90,0.3); background: linear-gradient(135deg, #fffaf7, #fff); }
+
+.ach-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+
+.ach-icon-wrap {
+  width: 44px; height: 44px;
+  background: color-mix(in srgb, var(--ai) 12%, transparent);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ai);
+  font-size: 1.2rem;
+}
+
+.ach-award-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  background: linear-gradient(135deg, var(--coral), var(--gold));
+  color: white;
+  border-radius: 100px;
+}
+
+.ach-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.ach-org { font-size: 0.78rem; color: var(--coral); font-weight: 600; margin-bottom: 10px; }
+.ach-desc { font-size: 0.84rem; color: var(--ink3); line-height: 1.65; margin-bottom: 14px; }
+.ach-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.ach-tags span { font-size: 0.72rem; padding: 3px 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: 100px; color: var(--ink3); }
+
+/* ══════════ EDUCATION ══════════ */
+.edu-list { display: flex; flex-direction: column; gap: 20px; max-width: 820px; }
+
+.edu-row { display: grid; grid-template-columns: 80px 1fr; gap: 24px; align-items: start; }
+
+.edu-year-col { display: flex; flex-direction: column; align-items: center; padding-top: 28px; position: relative; }
+.edu-year { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--coral); line-height: 1; }
+.edu-year-end { font-size: 0.72rem; color: var(--ink3); margin-top: 2px; }
+.edu-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--border2), transparent); margin-top: 8px; }
+
+.edu-card-new {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
+}
+.edu-card-new:hover { transform: translateX(4px); box-shadow: var(--shadow-md); }
+
+.edu-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+
+.edu-icon-new {
+  width: 40px; height: 40px;
+  background: color-mix(in srgb, var(--ei) 12%, transparent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ei);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.edu-header > div { flex: 1; }
+.edu-card-new h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.edu-inst { font-size: 0.82rem; color: var(--ink3); }
+
+.edu-score-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 13px;
+  background: rgba(232,132,90,0.1);
+  color: var(--coral);
+  border: 1.5px solid rgba(232,132,90,0.2);
+  border-radius: 100px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.edu-desc { font-size: 0.84rem; color: var(--ink3); line-height: 1.6; margin-bottom: 12px; }
+.edu-subjects { display: flex; flex-wrap: wrap; gap: 6px; }
+.edu-subjects span { font-size: 0.75rem; padding: 4px 11px; background: var(--bg2); border: 1px solid var(--border); border-radius: 100px; color: var(--ink3); font-weight: 500; }
+
+/* ══════════ CERTIFICATES ══════════ */
+.certs-layout { display: flex; flex-direction: column; gap: 16px; max-width: 780px; }
+
+.cert-card-new {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
+}
+.cert-card-new:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.cert-header-band { height: 5px; }
+
+.cert-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 24px;
+}
+
+.cert-logo {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.cert-info { flex: 1; }
+.cert-card-new h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.cert-issuer { font-size: 0.82rem; color: var(--coral); font-weight: 600; margin-bottom: 2px; }
+.cert-when { font-size: 0.78rem; color: var(--ink3); margin-bottom: 8px; }
+.cert-about { font-size: 0.83rem; color: var(--ink3); line-height: 1.5; }
+
+.cert-verified {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--sage);
+  white-space: nowrap;
+  padding: 5px 12px;
+  background: rgba(125,188,140,0.1);
+  border: 1px solid rgba(125,188,140,0.25);
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+/* ══════════ RESUME ══════════ */
+.resume-viewer-wrap { max-width: 820px; }
+
+.resume-embed-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.resume-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--bg2);
+  border-bottom: 1.5px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--ink2);
+  font-weight: 600;
+  gap: 12px;
+}
+.resume-toolbar i { color: var(--coral); }
+.resume-toolbar-right { display: flex; gap: 10px; }
+.resume-chip {
+  font-size: 0.76rem;
+  padding: 4px 12px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  color: var(--ink3);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.resume-pdf-area { padding: 40px; min-height: 400px; }
+
+.resume-placeholder {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.resume-pdf-icon { font-size: 3rem; color: var(--coral); }
+.resume-placeholder h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); }
+.resume-placeholder p { font-size: 0.88rem; color: var(--ink3); max-width: 400px; line-height: 1.6; }
+
+.resume-summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; width: 100%; max-width: 520px; text-align: left; }
+.rs-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--bg2); border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.84rem; color: var(--ink2); }
+.rs-item i { color: var(--coral); font-size: 0.9rem; flex-shrink: 0; }
+
+/* ══════════ CONTACT ══════════ */
+.contact-grid { display: grid; grid-template-columns: 1fr 380px; gap: 48px; max-width: 920px; align-items: start; }
+
+.contact-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.contact-para { font-size: 0.92rem; color: var(--ink3); line-height: 1.7; margin-bottom: 22px; max-width: 420px; }
+
+.avail-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.avail-pill { display: flex; align-items: center; gap: 6px; padding: 7px 14px; background: rgba(125,188,140,0.1); border: 1px solid rgba(125,188,140,0.25); border-radius: 100px; font-size: 0.78rem; color: #4a9a5c; font-weight: 600; }
+.avail-pill i { font-size: 0.5rem; }
+
+.contact-items-list { display: flex; flex-direction: column; gap: 10px; }
+.ci-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.25s;
+  box-shadow: var(--shadow-sm);
+}
+.ci-row:hover { border-color: var(--coral); transform: translateX(4px); box-shadow: var(--shadow-md); }
+.ci-ico { width: 38px; height: 38px; background: color-mix(in srgb, var(--c) 12%, transparent); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--c); font-size: 0.95rem; flex-shrink: 0; }
+.ci-detail { flex: 1; }
+.ci-detail strong { display: block; font-size: 0.84rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.ci-detail span { font-size: 0.8rem; color: var(--ink3); }
+.ci-ext { font-size: 0.72rem; color: var(--ink3); opacity: 0; transition: opacity 0.2s; }
+.ci-row:hover .ci-ext { opacity: 1; }
+
+.meeting-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 12px;
+}
+.meeting-top { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 18px; }
+.meeting-cal-icon { font-size: 1.4rem; color: var(--coral); margin-top: 2px; flex-shrink: 0; }
+.meeting-top h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.meeting-top p { font-size: 0.8rem; color: var(--ink3); }
+
+.time-slots { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.slot { display: flex; align-items: center; gap: 10px; font-size: 0.84rem; color: var(--ink2); }
+.slot i { color: var(--gold); width: 16px; }
+
+.send-meeting-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: var(--ink);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.3s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.send-meeting-btn:hover { background: var(--coral); box-shadow: 0 6px 20px rgba(232,132,90,0.3); }
+
+.resp-note { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--ink3); padding: 0 4px; }
+.resp-note i { color: var(--gold); }
+
+/* ══════════ SCROLLBAR ══════════ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* ══════════ RESPONSIVE ══════════ */
+@media (max-width: 960px) {
+  .home-grid { grid-template-columns: 1fr; text-align: center; padding: 20px 30px; }
+  .home-visual { display: none; }
+  .home-links { justify-content: center; }
+  .home-stats { justify-content: center; }
+  #page-bot { padding: 40px 24px; }
+  .hub-layout { grid-template-columns: 1fr; }
+  .section-page { padding: 28px 24px 80px; }
+  .skills-master-grid { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .ach-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .topnav { padding: 20px 30px; }
+  .topic-grid { grid-template-columns: 1fr; }
+}

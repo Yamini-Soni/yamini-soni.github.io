@@ -293,7 +293,7 @@ const projectData = {
     grad: 'linear-gradient(135deg,#5a8ee8,#7dbc8c)',
     overview: 'A real-time attendance system using deep learning face recognition — eliminating manual roll calls with over 90% recognition accuracy.',
     points: [
-      'Used dlib's ResNet model to generate 128-dimensional face encodings for each identity',
+      'Used dlib s ResNet model to generate 128-dimensional face encodings for each identity',
       'Implemented real-time face detection, encoding, and matching via webcam feed',
       'Automated attendance logging triggered on successful face match',
       'Built a full GUI for image capture, model training, and live recognition visualization',
